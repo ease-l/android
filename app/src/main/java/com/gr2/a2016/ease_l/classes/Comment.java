@@ -1,5 +1,7 @@
 package com.gr2.a2016.ease_l.classes;
 
+import org.bson.types.ObjectId;
+
 import java.io.File;
 import java.util.Date;
 
@@ -10,7 +12,7 @@ public class Comment {
     private String text;
     private File[] attachments;
     private Person author;
-    private int id;
+    private ObjectId id;
     private Date creationDate;
     private String version;
 
@@ -38,11 +40,11 @@ public class Comment {
         return author;
     }
 
-    public int getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -62,7 +64,7 @@ public class Comment {
         this.attachments = attachments;
     }
 
-    public Comment(String text, File[] attachments,Person author,int id,Date creationDate,String version) {
+    public Comment(String text, File[] attachments,Person author,ObjectId id,Date creationDate,String version) {
         this.text = text;
         this.author = author;
         this.attachments = attachments;

@@ -1,6 +1,8 @@
 package com.gr2.a2016.ease_l.classes;
 
 
+import org.bson.types.ObjectId;
+
 import java.util.Date;
 
 /**
@@ -9,7 +11,7 @@ import java.util.Date;
 public class Image {
     private Comment[] comments;
     private byte[] data;
-    private int id;
+    private ObjectId id;
     private Person author;
     private Date creationDate;
     private String version;
@@ -30,11 +32,11 @@ public class Image {
         return creationDate;
     }
 
-    public void setId(int id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
-    public int getId() {
+    public ObjectId getId() {
         return id;
     }
 
@@ -62,7 +64,7 @@ public class Image {
         return data;
     }
 
-    public Image(Comment[] comments, byte[] data,Person author,int id,Date creationDate,String version) {
+    public Image(Comment[] comments, byte[] data,Person author,ObjectId id,Date creationDate,String version) {
         this.comments = comments;
         this.data = data;
         this.author = author;
