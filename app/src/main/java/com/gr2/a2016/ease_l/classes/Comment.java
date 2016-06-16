@@ -8,13 +8,9 @@ import java.util.Date;
 /**
  * Created by Usre on 27.05.2016.
  */
-public class Comment {
+public class Comment extends BaseEntity{
     private String text;
     private File[] attachments;
-    private Person author;
-    private ObjectId id;
-    private Date creationDate;
-    private String version;
 
     public void setVersion(String version) {
         this.version = version;

@@ -7,11 +7,7 @@ import java.util.Date;
 /**
  * Created by Usre on 27.05.2016.
  */
-public class Project {
-    private Person author;
-    private ObjectId id;
-    private Date creationDate;
-    private String version;
+public class Project extends BaseEntity{
     private Comment[] comments;
     private Project[] projects;
     private Image[] images;

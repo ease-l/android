@@ -8,13 +8,9 @@ import java.util.Date;
 /**
  * Created by Usre on 27.05.2016.
  */
-public class Image {
+public class Image extends BaseEntity{
     private Comment[] comments;
     private byte[] data;
-    private ObjectId id;
-    private Person author;
-    private Date creationDate;
-    private String version;
 
     public void setVersion(String version) {
         this.version = version;
