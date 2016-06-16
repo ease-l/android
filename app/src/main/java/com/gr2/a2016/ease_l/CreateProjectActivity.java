@@ -10,9 +10,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +33,7 @@ public class CreateProjectActivity extends Activity {
     ArrayList<TableRow> tableRows = new ArrayList<>();
     ArrayList<EditText> userNames = new ArrayList<>();
     LinearLayout linearUsers;
+    ImageButton accept;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,25 @@ public class CreateProjectActivity extends Activity {
         createUserSearch();
         Handler h = new Handler();
         h.postDelayed(r, 1000);
+        accept = (ImageButton) findViewById(R.id.imageButton);
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestQueue queue = Volley.newRequestQueue(CreateProjectActivity.this);
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(StringRequest.Method.GET, "http://ease-l.apphb.com/Comment", null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+
+                    }
+                });
+
+            }
+        });
     }
 
     private Runnable r = new Runnable() {
@@ -73,7 +103,7 @@ public class CreateProjectActivity extends Activity {
         }
     };
 
-    private void createUserSearch(){
+    private void createUserSearch() {
         EditText userName = new EditText(CreateProjectActivity.this);
         userName.setHint("User's name");
         userName.setTextSize(20);
