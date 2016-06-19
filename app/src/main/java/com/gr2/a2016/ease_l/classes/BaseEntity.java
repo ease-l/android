@@ -8,11 +8,11 @@ import java.util.Date;
  * Created by Valera_alt on 16-Jun-16.
  */
 
-public class BaseEntity {
-    private ObjectId id;
-    private Person author;
-    private Date creationDate;
-    private String version;
+public abstract class BaseEntity {
+    protected ObjectId id;
+    protected Person author;
+    protected Date creationDate;
+    protected String version;
 
     public BaseEntity(Person author,ObjectId id,Date creationDate,String version) {
         this.author = author;
