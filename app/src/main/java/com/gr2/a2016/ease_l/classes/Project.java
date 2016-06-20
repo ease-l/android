@@ -12,7 +12,6 @@ public class Project extends BaseEntity{
     private Project[] projects;
     private Image[] images;
 
-
     public void setImages(Image[] images) {
         this.images = images;
     }
@@ -37,43 +36,9 @@ public class Project extends BaseEntity{
         return comments;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setAuthor(Person author) {
-        this.author = author;
-    }
-
-    public Person getAuthor() {
-        return author;
-    }
-
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-    public Project(Person author,ObjectId id,Date creationDate,String version,Comment[] comments,Project[] projects,Image[] images){
-        this.id = id;
-        this.creationDate = creationDate;
-        this.version = version;
-        this.author = author;
-        this.id = id;
+    public Project(Person author,ObjectId id,Date creationDate,String version, Comment[] comments,Project[] projects,Image[] images){
+        super(author,id,creationDate,version);
+        this.comments = comments;
         this.projects = projects;
         this.images = images;
     }
