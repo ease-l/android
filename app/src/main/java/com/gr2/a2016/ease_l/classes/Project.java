@@ -1,7 +1,5 @@
 package com.gr2.a2016.ease_l.classes;
 
-import org.bson.types.ObjectId;
-
 import java.util.Date;
 
 /**
@@ -36,7 +34,7 @@ public class Project extends BaseEntity{
         return comments;
     }
 
-    public Project(Person author,ObjectId id,Date creationDate,String version, Comment[] comments,Project[] projects,Image[] images){
+    public Project(Person author,String id,Date creationDate,String version, Comment[] comments,Project[] projects,Image[] images){
         super(author,id,creationDate,version);
         this.comments = comments;
         this.projects = projects;

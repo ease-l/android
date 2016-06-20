@@ -1,7 +1,5 @@
 package com.gr2.a2016.ease_l.classes;
 
-import org.bson.types.ObjectId;
-
 import java.util.Date;
 
 /**
@@ -9,12 +7,12 @@ import java.util.Date;
  */
 
 public abstract class BaseEntity {
-    protected ObjectId id;
+    protected String id;
     protected Person author;
     protected Date creationDate;
     protected String version;
 
-    public BaseEntity(Person author,ObjectId id,Date creationDate,String version) {
+    public BaseEntity(Person author,String id,Date creationDate,String version) {
         this.author = author;
         this.id = id;
         this.creationDate = creationDate;
@@ -37,11 +35,11 @@ public abstract class BaseEntity {
         return creationDate;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
