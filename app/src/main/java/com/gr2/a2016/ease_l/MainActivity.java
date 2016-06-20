@@ -84,6 +84,8 @@ public class MainActivity extends Activity {
                     }
                 });
                 queue.add(jsonObjectRequest);
+                Intent intent = new Intent(MainActivity.this, BaseActivity.class);
+                startActivity(intent);
             }
         });
 
