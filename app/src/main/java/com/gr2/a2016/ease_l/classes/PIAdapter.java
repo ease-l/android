@@ -52,11 +52,13 @@ public class PIAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if (position >= projects.size()) {
-                view = lInflater.inflate(R.layout.i_adapter_item, parent, false);
-                ((TextView) view.findViewById(R.id.p_i_name)).setText(images.get(position-projects.size()).getName());
-        } else{
+            view = lInflater.inflate(R.layout.i_adapter_item, parent, false);
+            ((TextView) view.findViewById(R.id.p_i_name)).setText(images.get(position - projects.size()).getName());
+            ((TextView) view.findViewById(R.id.version)).setText(images.get(position - projects.size()).getVersion());
+        } else {
             view = lInflater.inflate(R.layout.p_adapter_item, parent, false);
             ((TextView) view.findViewById(R.id.p_i_name)).setText(projects.get(position).getName());
+            ((TextView) view.findViewById(R.id.version)).setText(projects.get(position).getVersion());
         }
         return view;
     }

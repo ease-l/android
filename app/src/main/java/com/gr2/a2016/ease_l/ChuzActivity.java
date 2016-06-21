@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.gr2.a2016.ease_l.classes.Image;
 import com.gr2.a2016.ease_l.classes.NetworkAdreses;
 import com.gr2.a2016.ease_l.classes.PIAdapter;
 import com.gr2.a2016.ease_l.classes.Project;
@@ -50,18 +51,16 @@ public class ChuzActivity extends Activity {
                 public void onResponse(JSONArray jsonArray) {
                     findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
                     projects = new ArrayList<>();
-                    ArrayList<String> names = new ArrayList<>();
                     for(int i = 0;i<jsonArray.length();i++){
                         try {
                             JSONObject object = (JSONObject)jsonArray.get(i);
                             Project project = new Project(null,object.getString("Id"),null,object.getString("Version"),null,null,null,object.getString("Name"));
-                            names.add(object.getString("Name"));
                             projects.add(project);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                    PIAdapter piAdapter = new PIAdapter(context,names,new ArrayList<String>());
+                    PIAdapter piAdapter = new PIAdapter(context,projects,new ArrayList<Image>());
                     ((ListView)findViewById(R.id.projects)).setAdapter(piAdapter);
                 }
             }, new Response.ErrorListener() {
