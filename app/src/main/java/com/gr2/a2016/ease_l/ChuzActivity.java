@@ -168,7 +168,6 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Toast.makeText(context,"ff",Toast.LENGTH_LONG).show();
                     load();
                 }
             }, new Response.ErrorListener() {
