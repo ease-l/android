@@ -1,41 +1,42 @@
 package com.gr2.a2016.ease_l.classes;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by Usre on 27.05.2016.
  */
 public class Project extends BaseEntity{
-    private Comment[] comments;
-    private Project[] projects;
-    private Image[] images;
+    private ArrayList<String>[] comments;
+    private ArrayList<String> projects;
+    private ArrayList<String> images;
 
-    public void setImages(Image[] images) {
+    public void setImages(ArrayList<String> images) {
         this.images = images;
     }
 
-    public Image[] getImages() {
+    public ArrayList<String> getImages() {
         return images;
     }
 
-    public void setProjects(Project[] projects) {
+    public void setProjects(ArrayList<String> projects) {
         this.projects = projects;
     }
 
-    public Project[] getProjects() {
+    public ArrayList<String> getProjects() {
         return projects;
     }
 
-    public void setComments(Comment[] comments) {
+    public void setComments(ArrayList<String>[] comments) {
         this.comments = comments;
     }
 
-    public Comment[] getComments() {
+    public ArrayList<String>[] getComments() {
         return comments;
     }
 
-    public Project(Person author,String id,Date creationDate,String version, Comment[] comments,Project[] projects,Image[] images){
-        super(author,id,creationDate,version);
+    public Project(Person author,String id,Date creationDate,String version, ArrayList<String>[] comments,ArrayList<String> projects,ArrayList<String> images,String name){
+        super(author,id,creationDate,version,name);
         this.comments = comments;
         this.projects = projects;
         this.images = images;

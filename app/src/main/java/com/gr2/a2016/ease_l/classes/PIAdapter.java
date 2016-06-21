@@ -19,11 +19,11 @@ public class PIAdapter extends BaseAdapter {
     public static final int PROJECT = 0;
 
     private Context context;
-    private ArrayList<String> projects;
-    private ArrayList<String> images;
+    private ArrayList<Project> projects;
+    private ArrayList<Image> images;
     private LayoutInflater lInflater;
 
-    public PIAdapter(Context context, ArrayList<String> projects, ArrayList<String> images) {
+    public PIAdapter(Context context, ArrayList<Project> projects, ArrayList<Image> images) {
         this.context = context;
         this.projects = projects;
         this.images = images;
@@ -53,10 +53,10 @@ public class PIAdapter extends BaseAdapter {
         View view;
         if (position >= projects.size()) {
                 view = lInflater.inflate(R.layout.i_adapter_item, parent, false);
-                ((TextView) view.findViewById(R.id.p_i_name)).setText(images.get(position-projects.size()));
+                ((TextView) view.findViewById(R.id.p_i_name)).setText(images.get(position-projects.size()).getName());
         } else{
             view = lInflater.inflate(R.layout.p_adapter_item, parent, false);
-            ((TextView) view.findViewById(R.id.p_i_name)).setText(projects.get(position));
+            ((TextView) view.findViewById(R.id.p_i_name)).setText(projects.get(position).getName());
         }
         return view;
     }

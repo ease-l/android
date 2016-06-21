@@ -26,8 +26,8 @@ public class Image extends BaseEntity{
         return data;
     }
 
-    public Image(Comment[] comments, byte[] data,Person author,String id,Date creationDate,String version) {
-        super(author,id,creationDate,version);
+    public Image(Comment[] comments, byte[] data,Person author,String id,Date creationDate,String version,String name) {
+        super(author,id,creationDate,version,name);
         this.comments = comments;
         this.data = data;
     }

@@ -7,16 +7,26 @@ import java.util.Date;
  */
 
 public abstract class BaseEntity {
-    protected String id;
-    protected Person author;
-    protected Date creationDate;
-    protected String version;
+    private String id;
+    private Person author;
+    private Date creationDate;
+    private String version;
+    private String name;
 
-    public BaseEntity(Person author,String id,Date creationDate,String version) {
+    public BaseEntity(Person author,String id,Date creationDate,String version,String name) {
         this.author = author;
         this.id = id;
         this.creationDate = creationDate;
         this.version = version;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setVersion(String version) {

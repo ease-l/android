@@ -26,8 +26,8 @@ public class Comment extends BaseEntity{
         this.attachments = attachments;
     }
 
-    public Comment(String text, File[] attachments,Person author,String id,Date creationDate,String version) {
-        super(author,id,creationDate,version);
+    public Comment(String text, File[] attachments,Person author,String id,Date creationDate,String version,String name) {
+        super(author,id,creationDate,version,name);
         this.text = text;
         this.attachments = attachments;
     }
