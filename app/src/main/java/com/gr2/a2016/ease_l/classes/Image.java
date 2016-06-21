@@ -1,8 +1,6 @@
 package com.gr2.a2016.ease_l.classes;
 
 
-import org.bson.types.ObjectId;
-
 import java.util.Date;
 
 /**
@@ -28,7 +26,7 @@ public class Image extends BaseEntity{
         return data;
     }
 
-    public Image(Comment[] comments, byte[] data,Person author,ObjectId id,Date creationDate,String version) {
+    public Image(Comment[] comments, byte[] data,Person author,String id,Date creationDate,String version) {
         super(author,id,creationDate,version);
         this.comments = comments;
         this.data = data;

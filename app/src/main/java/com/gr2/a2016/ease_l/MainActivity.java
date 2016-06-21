@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,8 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -84,6 +82,8 @@ public class MainActivity extends Activity {
                     }
                 });
                 queue.add(jsonObjectRequest);
+                Intent intent = new Intent(MainActivity.this, BaseActivity.class);
+                startActivity(intent);
             }
         });
 
