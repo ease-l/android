@@ -51,10 +51,26 @@ public class ChuzActivity extends Activity {
                 public void onResponse(JSONArray jsonArray) {
                     findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
                     projects = new ArrayList<>();
+                    JSONArray cpi;
                     for(int i = 0;i<jsonArray.length();i++){
                         try {
                             JSONObject object = (JSONObject)jsonArray.get(i);
-                            Project project = new Project(null,object.getString("Id"),null,object.getString("Version"),null,null,null,object.getString("Name"));
+                            ArrayList<String> commentsid = new ArrayList<String>();
+                            ArrayList<String> projectsid = new ArrayList<String>();
+                            ArrayList<String> imagesid = new ArrayList<String>();
+                            cpi = object.getJSONArray("Projects");
+                            for (int q = 0; q<cpi.length();q++){
+                                projectsid.add(cpi.getString(q));
+                            }
+                            cpi = object.getJSONArray("Images");
+                            for (int q = 0; q<cpi.length();q++){
+                                imagesid.add(cpi.getString(q));
+                            }
+                            cpi = object.getJSONArray("Comments");
+                            for (int q = 0; q<cpi.length();q++){
+                                commentsid.add(cpi.getString(q));
+                            }
+                            Project project = new Project(null,object.getString("Id"),null,object.getString("Version"),commentsid,projectsid,imagesid,object.getString("Name"));
                             projects.add(project);
                         } catch (JSONException e) {
                             e.printStackTrace();
