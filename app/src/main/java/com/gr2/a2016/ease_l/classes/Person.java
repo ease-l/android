@@ -2,9 +2,6 @@ package com.gr2.a2016.ease_l.classes;
 
 import org.bson.types.ObjectId;
 
-/**
- * Created by Usre on 27.05.2016.
- */
 public class Person {
     private String name;
     private ObjectId id;
