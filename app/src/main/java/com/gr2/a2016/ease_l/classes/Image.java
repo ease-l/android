@@ -3,9 +3,7 @@ package com.gr2.a2016.ease_l.classes;
 
 import java.util.Date;
 
-/**
- * Created by Usre on 27.05.2016.
- */
+
 public class Image extends BaseEntity{
     private Comment[] comments;
     private byte[] data;
