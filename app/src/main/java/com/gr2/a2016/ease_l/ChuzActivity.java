@@ -4,6 +4,9 @@ package com.gr2.a2016.ease_l;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -37,7 +40,8 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     ArrayList<Image> images;
     ArrayList<String> idofprojects;
     ArrayList<String> idofimages;
-    String rootId;
+    Intent root;
+    ActionMode actionMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +49,24 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
         setContentView(R.layout.activity_chuz);
         context = this;
         requestQueue = Volley.newRequestQueue(context);
-        Intent intent = getIntent();
+        root = getIntent();
         ((Button)findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        if (intent.getBooleanExtra("ferst", true)) {
+        ((Button)findViewById(R.id.add)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (actionMode == null)
+                    actionMode = startActionMode(callback);
+                else
+                    actionMode.finish();
+            }
+        });
+        if (root.getBooleanExtra("ferst", true)) {
+            root = null;
             JsonArrayRequest request = new JsonArrayRequest(NetworkAdreses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
@@ -96,14 +110,13 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             });
             requestQueue.add(request);
         } else {
-            ((TextView)findViewById(R.id.root)).setText(intent.getStringExtra("Name"));
-            rootId = intent.getStringExtra("Id");
+            ((TextView)findViewById(R.id.root)).setText(root.getStringExtra("Name"));
             idofimages = new ArrayList<>();
             idofprojects = new ArrayList<>();
             projects = new ArrayList<>();
             images = new ArrayList<>();
             try {
-                JSONObject extra = new JSONObject(intent.getStringExtra("Id"));
+                JSONObject extra = new JSONObject(root.getStringExtra("Idm"));
                 JSONArray cpi = extra.getJSONArray("Projects");
                 for (int q = 0; q < cpi.length(); q++) {
                     idofprojects.add(cpi.getString(q));
@@ -116,6 +129,14 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                 e.printStackTrace();
             }
             load();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK){
+            startActivity(root);
+            finish();
         }
     }
 
@@ -141,7 +162,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                 e.printStackTrace();
             }
             intent = new Intent(context, ChuzActivity.class);
-            intent.putExtra("Id", extra.toString());
+            intent.putExtra("Idm", extra.toString());
             intent.putExtra("Name",projects.get(position).getName());
             intent.putExtra("Id",projects.get(position).getId());
             intent.putExtra("ferst", false);
@@ -224,4 +245,42 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             }
         }
     }
+    private ActionMode.Callback callback = new ActionMode.Callback() {
+
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.projectorimg, menu);
+            return true;
+        }
+
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            Intent intent;
+            if(item.getTitle().equals("проект")){
+                intent = new Intent(context,CreateProject.class);
+                if(root == null){
+                    intent.putExtra("Id"," ");
+                } else {
+                    intent.putExtra("Id",root.getStringExtra("Id"));
+                }
+            }else {
+                intent = new Intent(context,CreateImage.class);
+                if(root == null){
+                    intent.putExtra("Id"," ");
+                } else {
+                    intent.putExtra("Id",root.getStringExtra("Id"));
+                }
+            }
+            startActivityForResult(intent,1);
+            return false;
+        }
+
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+        }
+
+    };
+
 }

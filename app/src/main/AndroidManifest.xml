@@ -18,9 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BaseActivity"></activity>
-        <activity android:name=".CreateProjectActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".BaseActivity" />
+        <activity android:name=".CreateProject" android:screenOrientation="portrait"/>
+        <activity android:name=".CreateImage" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

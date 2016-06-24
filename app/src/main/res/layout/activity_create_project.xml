@@ -7,72 +7,48 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CreateProjectActivity">
+    tools:context="com.gr2.a2016.ease_l.CreateProject">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/imageButton">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="*название"
+        android:id="@+id/textView7"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="172dp" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/prname"
+        android:layout_below="@+id/textView7"
+        android:layout_centerHorizontal="true" />
 
-        </TableRow>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="отправить"
+        android:id="@+id/sendpr"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/scrollView" >
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="200dp"
-                    android:id="@+id/imageView2"
-                    android:focusableInTouchMode="false"
-                    android:src="@drawable/selectimage" />
-
-                <EditText
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:id="@+id/editText"
-                    android:hint="Project&apos;s name"
-                    android:textSize="25dp"
-                    android:textAlignment="center" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/users"></LinearLayout>
-            </LinearLayout>
-        </ScrollView>
-
-    </LinearLayout>
-
-    <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/imageButton"
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar2"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/accept" />
+        android:visibility="invisible" />
 
-    <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/imageButton2"
-        android:layout_alignBottom="@+id/imageButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/cancel" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="назад"
+        android:id="@+id/backpr"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
