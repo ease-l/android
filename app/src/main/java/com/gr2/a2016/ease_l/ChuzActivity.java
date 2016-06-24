@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -35,6 +37,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     ArrayList<Image> images;
     ArrayList<String> idofprojects;
     ArrayList<String> idofimages;
+    String rootId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,12 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
         context = this;
         requestQueue = Volley.newRequestQueue(context);
         Intent intent = getIntent();
-
+        ((Button)findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         if (intent.getBooleanExtra("ferst", true)) {
             JsonArrayRequest request = new JsonArrayRequest(NetworkAdreses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
                 @Override
@@ -88,6 +96,8 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             });
             requestQueue.add(request);
         } else {
+            ((TextView)findViewById(R.id.root)).setText(intent.getStringExtra("Name"));
+            rootId = intent.getStringExtra("Id");
             idofimages = new ArrayList<>();
             idofprojects = new ArrayList<>();
             projects = new ArrayList<>();
@@ -132,6 +142,8 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             }
             intent = new Intent(context, ChuzActivity.class);
             intent.putExtra("Id", extra.toString());
+            intent.putExtra("Name",projects.get(position).getName());
+            intent.putExtra("Id",projects.get(position).getId());
             intent.putExtra("ferst", false);
         } else {
             intent = new Intent(context,BaseActivity.class);

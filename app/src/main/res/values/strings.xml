@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Ease-L</string>
+    <string name="back">назад</string>
+    <string name="create">создать</string>
 </resources>
