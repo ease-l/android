@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,12 +35,11 @@ public class BaseActivity extends Activity {
         setContentView(R.layout.activity_base);
         String image_id = getIntent().getStringExtra("Id");
         final ImageView imageView = (ImageView) findViewById(R.id.imageView);
-
         RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
         final ProgressDialog pg = new ProgressDialog(BaseActivity.this);
         pg.setTitle("Downloading");
         pg.show();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(JsonObjectRequest.Method.GET, NetworkAdreses.GET_IMAGE_BY_ID + image_id, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(JsonObjectRequest.Method.GET, NetworkAdreses.GET_IMAGE_BY_ID +image_id, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 Iterator<String> keys = jsonObject.keys();
@@ -97,7 +97,7 @@ public class BaseActivity extends Activity {
                     linearHorizontal.addView(key);
                     linearHorizontal.addView(value);
                     ((LinearLayout) findViewById(R.id.linear)).addView(linearHorizontal);
-                    addComments(commentIds);
+                    loadComments(commentIds);
                 }
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(BaseActivity.this);
@@ -127,7 +127,7 @@ public class BaseActivity extends Activity {
         queue.add(jsonObjectRequest);
     }
 
-    public void addComments(ArrayList<String> commentIds) {
+    public void loadComments(ArrayList<String> commentIds) {
         for (int i = 0; i < commentIds.size(); i++) {
             RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, NetworkAdreses.GET_COMMENT + commentIds.get(i), null, new Response.Listener<JSONObject>() {
@@ -183,12 +183,34 @@ public class BaseActivity extends Activity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(BaseActivity.this,volleyError.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(BaseActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
             queue.add(jsonObjectRequest);
         }
     }
 
+    public void addComment(String name, String text) {
+        RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", name);
+            jsonObject.put("text", text);
+        } catch (JSONException e) {
+            Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/Comment", jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Toast.makeText(BaseActivity.this, jsonObject.toString(), Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(BaseActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(jsonObjectRequest);
+    }
 
 }
