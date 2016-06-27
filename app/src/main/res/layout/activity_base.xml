@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context="com.gr2.a2016.ease_l.BaseActivity">
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="35sp"
-        android:textColor="#FF0000"
+        android:textColor="#CCFF00"
         android:id="@+id/textView7"
         />
 
