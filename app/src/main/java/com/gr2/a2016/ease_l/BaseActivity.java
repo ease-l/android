@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.gr2.a2016.ease_l.classes.Comment;
 import com.gr2.a2016.ease_l.classes.CommentView;
 import com.gr2.a2016.ease_l.classes.NetworkAdreses;
 
@@ -39,7 +40,7 @@ public class BaseActivity extends Activity {
         final ProgressDialog pg = new ProgressDialog(BaseActivity.this);
         pg.setTitle("Downloading");
         pg.show();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(JsonObjectRequest.Method.GET, NetworkAdreses.GET_IMAGE_BY_ID +image_id, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(JsonObjectRequest.Method.GET, NetworkAdreses.GET_IMAGE_BY_ID + image_id, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 Iterator<String> keys = jsonObject.keys();
@@ -134,20 +135,12 @@ public class BaseActivity extends Activity {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     Iterator<String> keys = jsonObject.keys();
-                    String author = "";
                     String name = "";
                     String version = "";
-                    String creationData = "";
                     String text = "";
+                    String id = "";
                     while (keys.hasNext()) {
                         String key = keys.next();
-                        if (key.equals("Author")) {
-                            try {
-                                author = jsonObject.getString(key);
-                            } catch (JSONException e) {
-                                Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
-                            }
-                        }
                         if (key.equals("Name")) {
                             try {
                                 name = jsonObject.getString(key);
@@ -162,13 +155,6 @@ public class BaseActivity extends Activity {
                                 Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
                             }
                         }
-                        if (key.equals("CreationelData")) {
-                            try {
-                                creationData = jsonObject.getString(key);
-                            } catch (JSONException e) {
-                                Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
-                            }
-                        }
                         if (key.equals("Text")) {
                             try {
                                 text = jsonObject.getString(key);
@@ -176,8 +162,16 @@ public class BaseActivity extends Activity {
                                 Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
                             }
                         }
+                        if (key.equals("Id")) {
+                            try {
+                                id = jsonObject.getString(key);
+                            } catch (JSONException e) {
+                                Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
+                            }
+                        }
                     }
-                    CommentView commentView = new CommentView(author, version, text, creationData, ((LinearLayout) findViewById(R.id.linear)), BaseActivity.this, name);
+                    Comment comment = new Comment(text,null,null,id,null,version,name);
+                    CommentView commentView = new CommentView(comment,((LinearLayout) findViewById(R.id.linear)), BaseActivity.this);
                     commentView.addViews();
                 }
             }, new Response.ErrorListener() {
@@ -199,7 +193,7 @@ public class BaseActivity extends Activity {
         } catch (JSONException e) {
             Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/Comment", jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/Project" + getIntent().getStringExtra("rootId") + "/comment", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 Toast.makeText(BaseActivity.this, jsonObject.toString(), Toast.LENGTH_LONG).show();
@@ -212,5 +206,4 @@ public class BaseActivity extends Activity {
         });
         queue.add(jsonObjectRequest);
     }
-
 }
