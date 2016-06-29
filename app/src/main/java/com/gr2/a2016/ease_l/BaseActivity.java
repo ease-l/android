@@ -19,6 +19,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.gr2.a2016.ease_l.classes.Comment;
+import com.gr2.a2016.ease_l.classes.CommentRequests;
 import com.gr2.a2016.ease_l.classes.CommentView;
 import com.gr2.a2016.ease_l.classes.NetworkAdreses;
 
@@ -60,6 +61,7 @@ public class BaseActivity extends Activity {
                     }
                     JSONArray commentIdsArray = new JSONArray();
                     ArrayList<String> commentIds = new ArrayList<>();
+
                     if (s.equals("Comments")) {
                         try {
                             commentIdsArray = jsonObject.getJSONArray(s);
@@ -73,7 +75,8 @@ public class BaseActivity extends Activity {
                                 Toast.makeText(BaseActivity.this,"error",Toast.LENGTH_LONG).show();
                             }
                         }
-                        loadComments(commentIds);
+                        CommentRequests commentRequests = new CommentRequests();
+                        commentRequests.loadComments(commentIds,BaseActivity.this,(LinearLayout) findViewById(R.id.linear));
                         continue;
                     }
                     LinearLayout linearHorizontal = new LinearLayout(BaseActivity.this);
@@ -124,61 +127,6 @@ public class BaseActivity extends Activity {
         queue.add(jsonObjectRequest);
     }
 
-    public void loadComments(ArrayList<String> commentIds) {
-        for (int i = 0; i < commentIds.size(); i++) {
-            RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, NetworkAdreses.GET_COMMENT + commentIds.get(i), null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject jsonObject) {
-                    Iterator<String> keys = jsonObject.keys();
-                    String name = "";
-                    String version = "";
-                    String text = "";
-                    String id = "";
-                    while (keys.hasNext()) {
-                        String key = keys.next();
-                        if (key.equals("Name")) {
-                            try {
-                                name = jsonObject.getString(key);
-                            } catch (JSONException e) {
-                                Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        if (key.equals("Version")) {
-                            try {
-                                version = jsonObject.getString(key);
-                            } catch (JSONException e) {
-                                Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        if (key.equals("Text")) {
-                            try {
-                                text = jsonObject.getString(key);
-                            } catch (JSONException e) {
-                                Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        if (key.equals("Id")) {
-                            try {
-                                id = jsonObject.getString(key);
-                            } catch (JSONException e) {
-                                Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }
-                    Comment comment = new Comment(text,null,null,id,null,version,name);
-                    CommentView commentView = new CommentView(comment,((LinearLayout) findViewById(R.id.linear)), BaseActivity.this);
-                    commentView.addViews();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(BaseActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-            queue.add(jsonObjectRequest);
-        }
-    }
 
 
 }

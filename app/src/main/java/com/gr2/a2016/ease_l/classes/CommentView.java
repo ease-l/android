@@ -19,7 +19,7 @@ public class CommentView {
 
     public void addViews(){
         TextView authorName = new TextView(context);
-        authorName.setText(/*comment.getAuthor().getName()*/"Lol");
+        authorName.setText(/*comment.getAuthor().getName()*/"Anonymous");
         authorName.setTextSize(18);
         authorName.setTextColor(Color.RED);
 
