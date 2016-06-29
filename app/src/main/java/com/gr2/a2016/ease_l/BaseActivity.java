@@ -22,6 +22,7 @@ import com.gr2.a2016.ease_l.classes.Comment;
 import com.gr2.a2016.ease_l.classes.CommentView;
 import com.gr2.a2016.ease_l.classes.NetworkAdreses;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,28 +58,22 @@ public class BaseActivity extends Activity {
                         }
                         continue;
                     }
+                    JSONArray commentIdsArray = new JSONArray();
                     ArrayList<String> commentIds = new ArrayList<>();
                     if (s.equals("Comments")) {
-                        String commentBase = "";
                         try {
-                            commentBase = jsonObject.getString(s);
+                            commentIdsArray = jsonObject.getJSONArray(s);
                         } catch (JSONException e) {
-                            Toast.makeText(BaseActivity.this, "error at downloading", Toast.LENGTH_LONG).show();
+                            Toast.makeText(BaseActivity.this,"errorka",Toast.LENGTH_LONG).show();
                         }
-                        if (commentBase.length() > 1) {
-                            for (int i = 0; i < commentBase.length(); i++) {
-                                if (commentBase.charAt(i) == '"') {
-                                    i++;
-                                    int firstChar = i;
-                                    while (i < commentBase.length() && commentBase.charAt(i) != '"') {
-                                        i++;
-                                    }
-                                    String commmentId = commentBase.substring(firstChar, i);
-                                    commentIds.add(commmentId);
-                                }
+                        for(int i =0 ; i<commentIdsArray.length();i++){
+                            try {
+                                commentIds.add(commentIdsArray.getString(i));
+                            } catch (JSONException e) {
+                                Toast.makeText(BaseActivity.this,"error",Toast.LENGTH_LONG).show();
                             }
-
                         }
+                        loadComments(commentIds);
                         continue;
                     }
                     LinearLayout linearHorizontal = new LinearLayout(BaseActivity.this);
@@ -98,7 +93,7 @@ public class BaseActivity extends Activity {
                     linearHorizontal.addView(key);
                     linearHorizontal.addView(value);
                     ((LinearLayout) findViewById(R.id.linear)).addView(linearHorizontal);
-                    loadComments(commentIds);
+
                 }
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(BaseActivity.this);
@@ -111,6 +106,7 @@ public class BaseActivity extends Activity {
                     }, 0, 0, null, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
+                            pg.cancel();
                             Toast.makeText(BaseActivity.this, "error in image", Toast.LENGTH_LONG).show();
                         }
                     });
@@ -184,26 +180,5 @@ public class BaseActivity extends Activity {
         }
     }
 
-    public void addComment(String name, String text) {
-        RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("name", name);
-            jsonObject.put("text", text);
-        } catch (JSONException e) {
-            Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/Project" + getIntent().getStringExtra("rootId") + "/comment", jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject jsonObject) {
-                Toast.makeText(BaseActivity.this, jsonObject.toString(), Toast.LENGTH_LONG).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(BaseActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-        queue.add(jsonObjectRequest);
-    }
+
 }
