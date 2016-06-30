@@ -66,17 +66,17 @@ public class BaseActivity extends Activity {
                         try {
                             commentIdsArray = jsonObject.getJSONArray(s);
                         } catch (JSONException e) {
-                            Toast.makeText(BaseActivity.this,"errorka",Toast.LENGTH_LONG).show();
+                            Toast.makeText(BaseActivity.this, "errorka", Toast.LENGTH_LONG).show();
                         }
-                        for(int i =0 ; i<commentIdsArray.length();i++){
+                        for (int i = 0; i < commentIdsArray.length(); i++) {
                             try {
                                 commentIds.add(commentIdsArray.getString(i));
                             } catch (JSONException e) {
-                                Toast.makeText(BaseActivity.this,"error",Toast.LENGTH_LONG).show();
+                                Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
                             }
                         }
                         CommentRequests commentRequests = new CommentRequests();
-                        commentRequests.loadComments(commentIds,BaseActivity.this,(LinearLayout) findViewById(R.id.linear));
+                        commentRequests.loadComments(commentIds, BaseActivity.this, (LinearLayout) findViewById(R.id.linear));
                         continue;
                     }
                     LinearLayout linearHorizontal = new LinearLayout(BaseActivity.this);
@@ -126,7 +126,6 @@ public class BaseActivity extends Activity {
         });
         queue.add(jsonObjectRequest);
     }
-
 
 
 }
