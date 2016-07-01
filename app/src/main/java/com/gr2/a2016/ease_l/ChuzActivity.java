@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class ChuzActivity extends Activity implements ListView.OnItemClickListener {
+public class ChuzActivity extends Activity implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {
     RequestQueue requestQueue;
     ChuzActivity context;
     ArrayList<Project> projects;
@@ -42,6 +42,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     ArrayList<String> idofimages;
     Intent root;
     ActionMode actionMode;
+    int clicknam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +51,13 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
         context = this;
         requestQueue = Volley.newRequestQueue(context);
         root = getIntent();
-        ((Button)findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        ((Button)findViewById(R.id.add)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.add)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (actionMode == null)
@@ -100,6 +101,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                     PIAdapter piAdapter = new PIAdapter(context, projects, new ArrayList<Image>());
                     ((ListView) findViewById(R.id.projects)).setAdapter(piAdapter);
                     ((ListView) findViewById(R.id.projects)).setOnItemClickListener(context);
+                    ((ListView) findViewById(R.id.projects)).setOnItemLongClickListener(context);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -110,7 +112,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             });
             requestQueue.add(request);
         } else {
-            ((TextView)findViewById(R.id.root)).setText(root.getStringExtra("Name"));
+            ((TextView) findViewById(R.id.root)).setText(root.getStringExtra("Name"));
             idofimages = new ArrayList<>();
             idofprojects = new ArrayList<>();
             projects = new ArrayList<>();
@@ -134,9 +136,40 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK){
-            startActivity(root);
-            finish();
+        if (resultCode == RESULT_OK) {
+            if (root == null) {
+                root = new Intent(context, ChuzActivity.class);
+                startActivity(root);
+                finish();
+            } else {
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, NetworkAdreses.GET_PROJECT_BY_ID + root.getStringExtra("Id"), null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject object) {
+                        JSONObject extra = new JSONObject();
+                        Intent intent = new Intent(context, ChuzActivity.class);
+                        try {
+                            extra.put("Projects", object.getJSONArray("Projects"));
+                            extra.put("Images", object.getJSONArray("Images"));
+                            intent.putExtra("Idm", extra.toString());
+                            intent.putExtra("Name", object.getString("Name"));
+                            intent.putExtra("Id", object.getString("Id"));
+                            intent.putExtra("ferst", false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        startActivity(intent);
+                        finish();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+                        Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                    }
+                });
+                requestQueue.add(request);
+                findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -163,12 +196,12 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             }
             intent = new Intent(context, ChuzActivity.class);
             intent.putExtra("Idm", extra.toString());
-            intent.putExtra("Name",projects.get(position).getName());
-            intent.putExtra("Id",projects.get(position).getId());
+            intent.putExtra("Name", projects.get(position).getName());
+            intent.putExtra("Id", projects.get(position).getId());
             intent.putExtra("ferst", false);
         } else {
-            intent = new Intent(context,BaseActivity.class);
-            intent.putExtra("Id",images.get(position-projects.size()).getId());
+            intent = new Intent(context, BaseActivity.class);
+            intent.putExtra("Id", images.get(position - projects.size()).getId());
         }
         startActivity(intent);
     }
@@ -223,7 +256,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                             for (int q = 0; q < cpi.length(); q++) {
                                 commentsid.add(cpi.getString(q));
                             }
-                            Image imager = new Image(commentsid,object.getString("Url"),null,object.getString("Id"),null,object.getString("Version"),object.getString("Name"));
+                            Image imager = new Image(commentsid, object.getString("Url"), null, object.getString("Id"), null, object.getString("Version"), object.getString("Name"));
                             images.add(imager);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -242,9 +275,11 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                 PIAdapter piAdapter = new PIAdapter(context, projects, images);
                 ((ListView) findViewById(R.id.projects)).setAdapter(piAdapter);
                 ((ListView) findViewById(R.id.projects)).setOnItemClickListener(context);
+                ((ListView) findViewById(R.id.projects)).setOnItemLongClickListener(this);
             }
         }
     }
+
     private ActionMode.Callback callback = new ActionMode.Callback() {
 
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -258,22 +293,79 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
 
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             Intent intent;
-            if(item.getTitle().equals("проект")){
-                intent = new Intent(context,CreateProject.class);
-                if(root == null){
-                    intent.putExtra("Id"," ");
+            if (item.getTitle().equals("проект")) {
+                intent = new Intent(context, CreateProject.class);
+                if (root == null) {
+                    intent.putExtra("Id", " ");
                 } else {
-                    intent.putExtra("Id",root.getStringExtra("Id"));
+                    intent.putExtra("Id", root.getStringExtra("Id"));
                 }
-            }else {
-                intent = new Intent(context,CreateImage.class);
-                if(root == null){
-                    intent.putExtra("Id"," ");
+            } else {
+                intent = new Intent(context, CreateImage.class);
+                if (root == null) {
+                    intent.putExtra("Id", " ");
                 } else {
-                    intent.putExtra("Id",root.getStringExtra("Id"));
+                    intent.putExtra("Id", root.getStringExtra("Id"));
                 }
             }
-            startActivityForResult(intent,1);
+            startActivityForResult(intent, 1);
+            actionMode.finish();
+            return false;
+        }
+
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+        }
+
+    };
+    private ActionMode.Callback chang = new ActionMode.Callback() {
+
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.change, menu);
+            return true;
+        }
+
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (item.getTitle().equals("изменить")) {
+            } else {
+                if (clicknam < projects.size()) {
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + projects.get(clicknam), null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject object) {
+                            Toast.makeText(context, "успех!", Toast.LENGTH_LONG).show();
+                            context.onActivityResult(1, RESULT_OK, null);
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+                            Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    requestQueue.add(request);
+                } else {
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_IMAGE_BY_ID + images.get(clicknam - projects.size()), null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject object) {
+                            Toast.makeText(context, "успех!", Toast.LENGTH_LONG).show();
+                            context.onActivityResult(1, RESULT_OK, null);
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+                            Toast.makeText(context, "что-то пошло не так" +
+                                    "( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    requestQueue.add(request);
+                }
+            }
+            actionMode.finish();
             return false;
         }
 
@@ -283,4 +375,12 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
 
     };
 
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        clicknam = position;
+        if (actionMode != null)
+            actionMode.finish();
+        actionMode = startActionMode(chang);
+        return false;
+    }
 }

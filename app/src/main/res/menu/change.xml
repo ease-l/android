@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/pojectsel"
-        android:title="проект">
+        android:title="изменить">
     </item>
     <item
         android:id="@+id/imagesel"
-        android:title="картинку">
+        android:title="удалить">
     </item>
 </menu>
