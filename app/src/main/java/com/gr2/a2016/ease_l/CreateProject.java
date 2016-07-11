@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -61,6 +62,10 @@ RequestQueue queue;
                             ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.INVISIBLE);
                         }
                     });
+                    request.setRetryPolicy(new DefaultRetryPolicy(
+                            30000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     queue.add(request);
                     ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.VISIBLE);
                 }else {
@@ -78,6 +83,10 @@ RequestQueue queue;
                             ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.INVISIBLE);
                         }
                     });
+                    request.setRetryPolicy(new DefaultRetryPolicy(
+                            30000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     queue.add(request);
                     ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.VISIBLE);
                 }

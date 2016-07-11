@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -110,6 +111,10 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                     Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
                 }
             });
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    30000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(request);
         } else {
             ((TextView) findViewById(R.id.root)).setText(root.getStringExtra("Name"));
@@ -167,6 +172,10 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                         Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
                     }
                 });
+                request.setRetryPolicy(new DefaultRetryPolicy(
+                        30000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 requestQueue.add(request);
                 findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
             }
@@ -242,6 +251,10 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                     Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
                 }
             });
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    30000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(request);
         } else {
             if (idofimages.size() > 0) {
@@ -269,6 +282,10 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                         Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
                     }
                 });
+                request.setRetryPolicy(new DefaultRetryPolicy(
+                        30000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 requestQueue.add(request);
             } else {
                 findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
@@ -346,6 +363,10 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                             Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
                         }
                     });
+                    request.setRetryPolicy(new DefaultRetryPolicy(
+                            30000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     requestQueue.add(request);
                 } else {
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_IMAGE_BY_ID + images.get(clicknam - projects.size()), null, new Response.Listener<JSONObject>() {
@@ -362,6 +383,10 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                                     "( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
                         }
                     });
+                    request.setRetryPolicy(new DefaultRetryPolicy(
+                            30000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     requestQueue.add(request);
                 }
             }
