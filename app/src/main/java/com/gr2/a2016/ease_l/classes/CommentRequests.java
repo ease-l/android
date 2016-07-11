@@ -108,7 +108,7 @@ public class CommentRequests {
         } catch (JSONException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/Comment/id577287bc18aa6a61c4ec4ef5", jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, "http://ease-l.apphb.com/Comment/id577287bc18aa6a61c4ec4ef5", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 Toast.makeText(context, jsonObject.toString(), Toast.LENGTH_LONG).show();
