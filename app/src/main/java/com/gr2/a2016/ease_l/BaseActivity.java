@@ -3,42 +3,56 @@ package com.gr2.a2016.ease_l;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.api.client.http.json.JsonHttpContent;
 import com.gr2.a2016.ease_l.classes.Comment;
 import com.gr2.a2016.ease_l.classes.CommentRequests;
 import com.gr2.a2016.ease_l.classes.CommentView;
+import com.gr2.a2016.ease_l.classes.Image;
 import com.gr2.a2016.ease_l.classes.NetworkAdreses;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class BaseActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
         String image_id = getIntent().getStringExtra("Id");
         final ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
+        final RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
         final ProgressDialog pg = new ProgressDialog(BaseActivity.this);
         pg.setTitle("Downloading");
         pg.show();
@@ -96,7 +110,6 @@ public class BaseActivity extends Activity {
                     linearHorizontal.addView(key);
                     linearHorizontal.addView(value);
                     ((LinearLayout) findViewById(R.id.linear)).addView(linearHorizontal);
-
                 }
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(BaseActivity.this);
