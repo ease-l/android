@@ -33,6 +33,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/*     ТИЗЕР
+   ЭТОТ КОД БЫЛ НАПИСАН
+   МНОЙ В УСЛОВИЯХ СИЛЬНОЙ
+   СПЕШКИ ПЕРЕД УЕЗДОМ В
+   ЛИТВУ.
+
+   УДАЧИ)
+
+   ОБНОВЛЕНИЕ НЕ СДЕЛАНО.
+   DELETE НЕ ХОЧИТ РАБОТАТЬ.
+   ДОБОВЛЕНИЕ ТОЖЕ ХРОМАЕТ.
+ */
+
 
 public class ChuzActivity extends Activity implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {
     RequestQueue requestQueue;
@@ -122,20 +135,35 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             idofprojects = new ArrayList<>();
             projects = new ArrayList<>();
             images = new ArrayList<>();
-            try {
-                JSONObject extra = new JSONObject(root.getStringExtra("Idm"));
-                JSONArray cpi = extra.getJSONArray("Projects");
-                for (int q = 0; q < cpi.length(); q++) {
-                    idofprojects.add(cpi.getString(q));
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, NetworkAdreses.GET_PROJECT_BY_ID + root.getStringExtra("Id"), null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject object) {
+                    try {
+                        JSONArray cpi = object.getJSONArray("Projects");
+                        for (int q = 0; q < cpi.length(); q++) {
+                            idofprojects.add(cpi.getString(q));
+                        }
+                        cpi = object.getJSONArray("Images");
+                        for (int q = 0; q < cpi.length(); q++) {
+                            idofimages.add(cpi.getString(q));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    load();
                 }
-                cpi = extra.getJSONArray("Images");
-                for (int q = 0; q < cpi.length(); q++) {
-                    idofimages.add(cpi.getString(q));
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+                    Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            load();
+            });
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    30000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            requestQueue.add(request);
         }
     }
 
@@ -147,37 +175,14 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                 startActivity(root);
                 finish();
             } else {
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, NetworkAdreses.GET_PROJECT_BY_ID + root.getStringExtra("Id"), null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject object) {
-                        JSONObject extra = new JSONObject();
-                        Intent intent = new Intent(context, ChuzActivity.class);
-                        try {
-                            extra.put("Projects", object.getJSONArray("Projects"));
-                            extra.put("Images", object.getJSONArray("Images"));
-                            intent.putExtra("Idm", extra.toString());
-                            intent.putExtra("Name", object.getString("Name"));
-                            intent.putExtra("Id", object.getString("Id"));
-                            intent.putExtra("ferst", false);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        startActivity(intent);
-                        finish();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-                        Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
-                    }
-                });
-                request.setRetryPolicy(new DefaultRetryPolicy(
-                        30000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                requestQueue.add(request);
-                findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+
+                JSONObject extra = new JSONObject();
+                Intent intent = new Intent(context, ChuzActivity.class);
+                intent.putExtra("Id", root.getStringExtra("Id"));
+                intent.putExtra("Name", root.getStringExtra("Name"));
+                startActivity(intent);
+                finish();
+
             }
         }
     }
@@ -186,25 +191,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent();
         if (position < projects.size()) {
-            JSONArray pridarray = new JSONArray();
-            ArrayList<String> prids = projects.get(position).getProjects();
-            for (int i = 0; i < prids.size(); i++) {
-                pridarray.put(prids.get(i));
-            }
-            JSONArray imidarray = new JSONArray();
-            prids = projects.get(position).getImages();
-            for (int i = 0; i < prids.size(); i++) {
-                imidarray.put(prids.get(i));
-            }
-            JSONObject extra = new JSONObject();
-            try {
-                extra.put("Projects", pridarray);
-                extra.put("Images", imidarray);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
             intent = new Intent(context, ChuzActivity.class);
-            intent.putExtra("Idm", extra.toString());
             intent.putExtra("Name", projects.get(position).getName());
             intent.putExtra("Id", projects.get(position).getId());
             intent.putExtra("ferst", false);
