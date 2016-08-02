@@ -38,6 +38,7 @@ RequestQueue queue;
         if(v.getId() == R.id.backpr){
             finish();
         }else {
+            ((Button)findViewById(R.id.sendpr)).setClickable(false);
             String name = ((EditText)findViewById(R.id.prname)).getText().toString();
             if(!name.equals("")){
                 String id = getIntent().getStringExtra("Id");
@@ -58,6 +59,7 @@ RequestQueue queue;
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
+                            ((Button)findViewById(R.id.sendpr)).setClickable(true);
                             Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
                             ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.INVISIBLE);
                         }
@@ -79,6 +81,7 @@ RequestQueue queue;
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
+                            ((Button)findViewById(R.id.sendpr)).setClickable(true);
                             Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
                             ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.INVISIBLE);
                         }
