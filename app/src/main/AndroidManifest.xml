@@ -19,8 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".BaseActivity" />
-        <activity android:name=".CreateProject" android:screenOrientation="portrait"/>
-        <activity android:name=".CreateImage" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".CreateProject"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PostImage"></activity>
     </application>
 
 </manifest>

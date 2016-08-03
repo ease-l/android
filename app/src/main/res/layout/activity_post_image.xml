@@ -7,4 +7,32 @@
     android:layout_height="match_parent"
     tools:context="com.gr2.a2016.ease_l.PostImage">
 
+    <ImageView
+        android:src="@drawable/abc_btn_check_to_on_mtrl_015"
+        android:layout_width="373dp"
+        android:layout_height="258dp"
+        tools:layout_editor_absoluteY="7dp"
+        android:id="@+id/imageView2"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_post_image"
+        app:layout_constraintRight_toRightOf="@+id/activity_post_image"
+        app:layout_constraintHorizontal_bias="0.81" />
+
+    <EditText
+        android:layout_width="373dp"
+        android:layout_height="59dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:selectAllOnFocus="false"
+        android:hint="Name"
+        app:layout_constraintLeft_toLeftOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <Button
+        android:text="Post"
+        android:layout_width="89dp"
+        android:layout_height="49dp"
+        tools:layout_editor_absoluteX="153dp"
+        tools:layout_editor_absoluteY="376dp"
+        android:id="@+id/button" />
 </android.support.constraint.ConstraintLayout>

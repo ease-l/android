@@ -305,9 +305,10 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                     intent.putExtra("Id", root.getStringExtra("Id"));
                 }
             } else {
-                intent = new Intent(context, CreateImage.class);
+                intent = new Intent(context, PostImage.class);
                 if (root == null) {
-                    intent.putExtra("Id", " ");
+                    Toast.makeText(context,"Щазъ!",Toast.LENGTH_LONG).show();
+                    return false;
                 } else {
                     intent.putExtra("Id", root.getStringExtra("Id"));
                 }

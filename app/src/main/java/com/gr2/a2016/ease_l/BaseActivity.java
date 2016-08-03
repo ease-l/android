@@ -50,6 +50,7 @@ public class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_base);
         String image_id = getIntent().getStringExtra("Id");
         final ImageView imageView = (ImageView) findViewById(R.id.imageView);
         final RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
