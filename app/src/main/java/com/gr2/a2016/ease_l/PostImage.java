@@ -1,7 +1,9 @@
 package com.gr2.a2016.ease_l;
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -181,6 +183,23 @@ public class PostImage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK) {
             fullPhotoUri = data.getData();
+            String[] projection = {MediaStore.MediaColumns.DISPLAY_NAME};
+            String fileName = null;
+            ContentResolver cr = getApplicationContext().getContentResolver();
+
+            Cursor metaCursor = cr.query(fullPhotoUri,
+                    projection, null, null, null);
+            if (metaCursor != null) {
+                try {
+                    if (metaCursor.moveToFirst()) {
+                        fileName = metaCursor.getString(0);
+                    }
+                } finally {
+                    metaCursor.close();
+                }
+            }
+
+            name.setText(fileName);
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), fullPhotoUri);
