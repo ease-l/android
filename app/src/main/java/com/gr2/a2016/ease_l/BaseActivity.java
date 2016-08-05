@@ -56,7 +56,10 @@ public class BaseActivity extends Activity {
         final RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
         final ProgressDialog pg = new ProgressDialog(BaseActivity.this);
         pg.setTitle("Downloading");
+        pg.setCanceledOnTouchOutside(false);
+        pg.setCancelable(false);
         pg.show();
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(JsonObjectRequest.Method.GET, NetworkAdreses.GET_IMAGE_BY_ID + image_id, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {

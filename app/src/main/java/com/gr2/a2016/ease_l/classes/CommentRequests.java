@@ -29,7 +29,7 @@ public class CommentRequests {
         } catch (JSONException e) {
             Toast.makeText(context, "error", Toast.LENGTH_LONG).show();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/Project" + /*getIntent().getStringExtra("rootId")*/rootId + "/comment", jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/Project" + rootId + "/comment", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 Toast.makeText(context, jsonObject.toString(), Toast.LENGTH_LONG).show();
@@ -85,8 +85,8 @@ public class CommentRequests {
                             }
                         }
                     }
-                    Comment comment = new Comment(text,null,null,id,null,version,name);
-                    CommentView commentView = new CommentView(comment,linear, context);
+                    Comment comment = new Comment(text, null, null, id, null, version, name);
+                    CommentView commentView = new CommentView(comment, linear, context);
                     commentView.addViews();
                 }
             }, new Response.ErrorListener() {
@@ -99,12 +99,12 @@ public class CommentRequests {
         }
     }
 
-    public void updateComment(String name, String text,final Context context){
+    public void updateComment(String name, String text, final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("name",name);
-            jsonObject.put("text",text);
+            jsonObject.put("name", name);
+            jsonObject.put("text", text);
         } catch (JSONException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -119,6 +119,23 @@ public class CommentRequests {
                 Toast.makeText(context, volleyError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+        queue.add(jsonObjectRequest);
+    }
+
+    public void deleteComment(final Context context, String image_id, String comment_id) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, "http://ease-l.apphb.com/Image/id57a1cf9a0f815ad25094379b"+image_id+"/comment/id57a1cf9a0f815ad25094379a"+
+                comment_id, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Toast.makeText(context, jsonObject.toString(), Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(context, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(jsonObjectRequest);
     }
 }

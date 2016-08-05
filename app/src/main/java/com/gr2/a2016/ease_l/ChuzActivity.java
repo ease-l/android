@@ -337,6 +337,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             if (item.getTitle().equals("изменить")) {
             } else {
+                Toast.makeText(context,clicknam,Toast.LENGTH_LONG).show();
                 if (clicknam < projects.size()) {
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + projects.get(clicknam), null, new Response.Listener<JSONObject>() {
                         @Override

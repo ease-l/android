@@ -1,5 +1,6 @@
 package com.gr2.a2016.ease_l;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +44,8 @@ public class PostImage extends AppCompatActivity {
     int i = 0;
     ImageView imageView;
     Uri fullPhotoUri= null;
+    boolean image_selected = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +85,13 @@ public class PostImage extends AppCompatActivity {
     }
 
     void postImage (){
+        if(image_selected && name.getText().toString().length() > 0){
         try {
+            final ProgressDialog pg = new ProgressDialog(PostImage.this);
+            pg.setTitle("Downloading");
+            pg.setCanceledOnTouchOutside(false);
+            pg.setCancelable(false);
+            pg.show();
             InputStream iStream = getContentResolver().openInputStream(fullPhotoUri);
             final byte[] photoBytes = getBytes(iStream);
 
@@ -112,12 +121,16 @@ public class PostImage extends AppCompatActivity {
                     JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/project/id" + getIntent().getStringExtra("Id") + "/image", object, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject jsonObject) {
-                            Toast.makeText(PostImage.this, jsonObject.toString(), Toast.LENGTH_LONG).show();
+                            pg.cancel();
+                            Toast.makeText(PostImage.this, "Success", Toast.LENGTH_LONG).show();
+                            PostImage.this.setResult(RESULT_OK);
+                            finish();
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
-                            Toast.makeText(PostImage.this, "error", Toast.LENGTH_LONG).show();
+                            pg.cancel();
+                            Toast.makeText(PostImage.this, "Error", Toast.LENGTH_LONG).show();
                         }
                     });
                     RequestQueue queue = Volley.newRequestQueue(PostImage.this);
@@ -158,6 +171,8 @@ public class PostImage extends AppCompatActivity {
 
         } catch (IOException e) {
 
+        }}else{
+            Toast.makeText(PostImage.this,"Выбери картинку", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -173,6 +188,7 @@ public class PostImage extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Bad image", Toast.LENGTH_LONG).show();
             }
             imageView.setImageBitmap(bitmap);
+            image_selected = true;
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
