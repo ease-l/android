@@ -49,7 +49,8 @@ RequestQueue queue;
                     e.printStackTrace();
                 }
                 if (!id.equals(" ")){
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NetworkAdreses.GET_PROJECT_BY_ID + id + "/project", object, new Response.Listener<JSONObject>() {
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NetworkAdreses.GET_PROJECT_BY_ID + id + "/project", object,
+                            new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject jsonObject) {
                             Toast.makeText(context,"успех!!",Toast.LENGTH_LONG).show();

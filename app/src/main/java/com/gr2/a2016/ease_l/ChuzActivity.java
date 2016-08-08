@@ -33,18 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/*     ТИЗЕР
-   ЭТОТ КОД БЫЛ НАПИСАН
-   МНОЙ В УСЛОВИЯХ СИЛЬНОЙ
-   СПЕШКИ ПЕРЕД УЕЗДОМ В
-   ЛИТВУ.
 
-   УДАЧИ)
-
-   ОБНОВЛЕНИЕ НЕ СДЕЛАНО.
-   DELETE НЕ ХОЧИТ РАБОТАТЬ.
-   ДОБОВЛЕНИЕ ТОЖЕ ХРОМАЕТ.
- */
 
 
 public class ChuzActivity extends Activity implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {
@@ -336,6 +325,15 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
 
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             if (item.getTitle().equals("изменить")) {
+                if (clicknam < projects.size()) {
+
+                } else {
+                    Intent intent = new Intent(context,PostImage.class);
+                    intent.putExtra("Image_id",images.get(clicknam-projects.size()).getId());
+                    startActivityForResult(intent, 1);
+                    actionMode.finish();
+                    return false;
+                }
             } else {
                 Toast.makeText(context,clicknam,Toast.LENGTH_LONG).show();
                 if (clicknam < projects.size()) {
