@@ -120,23 +120,45 @@ public class PostImage extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/project/id" + getIntent().getStringExtra("Id") + "/image", object, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject jsonObject) {
-                            pg.cancel();
-                            Toast.makeText(PostImage.this, "Success", Toast.LENGTH_LONG).show();
-                            PostImage.this.setResult(RESULT_OK);
-                            finish();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            pg.cancel();
-                            Toast.makeText(PostImage.this, "Error", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    RequestQueue queue = Volley.newRequestQueue(PostImage.this);
-                    queue.add(postImage);
+
+                    if(getIntent().getStringExtra("Image_id").length()==0) {
+                        JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/project/id" + getIntent().getStringExtra("Id") + "/image", object, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject jsonObject) {
+                                pg.cancel();
+                                Toast.makeText(PostImage.this, "Success", Toast.LENGTH_LONG).show();
+                                PostImage.this.setResult(RESULT_OK);
+                                finish();
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                pg.cancel();
+                                Toast.makeText(PostImage.this, "Error", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        RequestQueue queue = Volley.newRequestQueue(PostImage.this);
+                        queue.add(postImage);
+                    }else{
+                        JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.PUT, "http://ease-l.apphb.com/image/id" + getIntent().getStringExtra("Image_id"), object, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject jsonObject) {
+                                pg.cancel();
+                                Toast.makeText(PostImage.this, "Success", Toast.LENGTH_LONG).show();
+                                PostImage.this.setResult(RESULT_OK);
+                                finish();
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                pg.cancel();
+                                Toast.makeText(PostImage.this, "Error", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        RequestQueue queue = Volley.newRequestQueue(PostImage.this);
+                        queue.add(postImage);
+                    }
+
                 }
             }, new Response.ErrorListener() {
                 @Override
