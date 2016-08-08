@@ -121,7 +121,7 @@ public class PostImage extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    if(getIntent().getStringExtra("Image_id").length()==0) {
+                    if (getIntent().getStringExtra("Image_id").length() == 0) {
                         JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/project/id" + getIntent().getStringExtra("Id") + "/image", object, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject jsonObject) {
@@ -139,7 +139,7 @@ public class PostImage extends AppCompatActivity {
                         });
                         RequestQueue queue = Volley.newRequestQueue(PostImage.this);
                         queue.add(postImage);
-                    }else{
+                    } else {
                         JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.PUT, "http://ease-l.apphb.com/image/id" + getIntent().getStringExtra("Image_id"), object, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject jsonObject) {
