@@ -127,7 +127,7 @@ public class PostImage extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        if (getIntent().getStringExtra("Image_id").length() == 0) {
+                        if (!getIntent().hasExtra("Image_id")) {
                             JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.POST, NetworkAdreses.GET_PROJECT_BY_ID + getIntent().getStringExtra("Id") + "/image", object, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject jsonObject) {
