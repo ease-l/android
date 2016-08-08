@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.gr2.a2016.ease_l.classes.NetworkAdreses;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,7 +110,7 @@ public class PostImage extends AppCompatActivity {
 
                 final HttpEntity httpEntity = builder.build();
 
-                StringRequest r = new StringRequest(Request.Method.POST, "http://ease-l.apphb.com/Image/Download", new Response.Listener<String>() {
+                StringRequest r = new StringRequest(Request.Method.POST, NetworkAdreses.POST_IMAGE, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         JSONObject obj = null;
@@ -127,7 +128,7 @@ public class PostImage extends AppCompatActivity {
                         }
 
                         if (getIntent().getStringExtra("Image_id").length() == 0) {
-                            JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.POST, "http://ease-l.apphb.com/project/id" + getIntent().getStringExtra("Id") + "/image", object, new Response.Listener<JSONObject>() {
+                            JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.POST, NetworkAdreses.GET_PROJECT_BY_ID + getIntent().getStringExtra("Id") + "/image", object, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject jsonObject) {
                                     pg.cancel();
@@ -145,7 +146,7 @@ public class PostImage extends AppCompatActivity {
                             RequestQueue queue = Volley.newRequestQueue(PostImage.this);
                             queue.add(postImage);
                         } else {
-                            JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.PUT, "http://ease-l.apphb.com/image/id" + getIntent().getStringExtra("Image_id"), object, new Response.Listener<JSONObject>() {
+                            JsonObjectRequest postImage = new JsonObjectRequest(Request.Method.PUT, NetworkAdreses.GET_IMAGE_BY_ID + getIntent().getStringExtra("Image_id"), object, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject jsonObject) {
                                     pg.cancel();

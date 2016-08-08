@@ -8,4 +8,5 @@ public class NetworkAdreses {
     public static final String GET_PROJECT_BY_ID = "http://api.ease-l.xyz/project/id";
     public static final String GET_IMAGE_BY_ID = "http://api.ease-l.xyz/Image/id";
     public static final String GET_COMMENT = "http://api.ease-l.xyz/Comment/id";
+    public static final String POST_IMAGE = "http://api.ease-l.xyz/Image/Download";
 }
