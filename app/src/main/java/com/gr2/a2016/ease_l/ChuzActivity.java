@@ -2,14 +2,21 @@ package com.gr2.a2016.ease_l;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
+import android.text.Editable;
+import android.text.InputType;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,12 +53,16 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     Intent root;
     ActionMode actionMode;
     int clicknam;
+    int positionDialog;
+    AlertDialog.Builder alert;
+    EditText message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chuz);
         context = this;
+        alert = new AlertDialog.Builder(this);
         requestQueue = Volley.newRequestQueue(context);
         root = getIntent();
         ((Button) findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
@@ -184,12 +195,40 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             intent.putExtra("Name", projects.get(position).getName());
             intent.putExtra("Id", projects.get(position).getId());
             intent.putExtra("ferst", false);
+            startActivity(intent);
         } else {
-            intent = new Intent(context, BaseActivity.class);
-            intent.putExtra("Id", images.get(position - projects.size()).getId());
+            positionDialog = position;
+            alert.setTitle("Image version");
+            message = new EditText(ChuzActivity.this);
+            message.setHint("Enter version");
+            message.setInputType(InputType.TYPE_CLASS_NUMBER);
+            alert.setView(message);
+            alert.setPositiveButton("OK", myClickListener);
+            alert.setNeutralButton("Last version", myClickListener);
+            alert.setNegativeButton("Cancel", myClickListener);
+            alert.show();
         }
-        startActivity(intent);
     }
+
+    DialogInterface.OnClickListener myClickListener = new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case Dialog.BUTTON_POSITIVE:
+                    Intent intent = new Intent(context, BaseActivity.class);
+                    intent.putExtra("Id", images.get(positionDialog - projects.size()).getId());
+                    intent.putExtra("Version", message.getText().toString());
+                    startActivity(intent);
+                    break;
+                case Dialog.BUTTON_NEGATIVE:
+                    break;
+                case DialogInterface.BUTTON_NEUTRAL:
+                    Intent intent2 = new Intent(context, BaseActivity.class);
+                    intent2.putExtra("Id", images.get(positionDialog - projects.size()).getId());
+                    startActivity(intent2);
+                    break;
+            }
+        }
+    };
 
     private void load() {
         if (idofprojects.size() > 0) {

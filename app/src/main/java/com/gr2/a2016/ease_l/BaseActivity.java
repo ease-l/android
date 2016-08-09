@@ -2,6 +2,7 @@ package com.gr2.a2016.ease_l;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -51,7 +52,8 @@ public class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        String image_id = getIntent().getStringExtra("Id");
+        Intent intent = getIntent();
+        String image_id = intent.getStringExtra("Id");
         final ImageView imageView = (ImageView) findViewById(R.id.imageView);
         final RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
         final ProgressDialog pg = new ProgressDialog(BaseActivity.this);
@@ -59,8 +61,13 @@ public class BaseActivity extends Activity {
         pg.setCanceledOnTouchOutside(false);
         pg.setCancelable(false);
         pg.show();
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(JsonObjectRequest.Method.GET, NetworkAdreses.GET_IMAGE_BY_ID + image_id, null, new Response.Listener<JSONObject>() {
+        String url;
+        if (getIntent().hasExtra("Version")) {
+            url = NetworkAdreses.GET_IMAGE_BY_ID + image_id + "/" + intent.getStringExtra("Version");
+        } else {
+            url = NetworkAdreses.GET_IMAGE_BY_ID + image_id;
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(JsonObjectRequest.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 Iterator<String> keys = jsonObject.keys();
