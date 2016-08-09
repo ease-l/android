@@ -145,7 +145,11 @@ public class BaseActivity extends Activity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(BaseActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                pg.cancel();
+                Toast.makeText(BaseActivity.this, "You are invalid", Toast.LENGTH_LONG).show();
+                Intent root = new Intent(BaseActivity.this, ChuzActivity.class);
+                startActivity(root);
+                finish();
             }
         });
         queue.add(jsonObjectRequest);

@@ -214,10 +214,12 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case Dialog.BUTTON_POSITIVE:
-                    Intent intent = new Intent(context, BaseActivity.class);
-                    intent.putExtra("Id", images.get(positionDialog - projects.size()).getId());
-                    intent.putExtra("Version", message.getText().toString());
-                    startActivity(intent);
+                    if (message.getText().toString().length() > 0) {
+                        Intent intent = new Intent(context, BaseActivity.class);
+                        intent.putExtra("Id", images.get(positionDialog - projects.size()).getId());
+                        intent.putExtra("Version", message.getText().toString());
+                        startActivity(intent);
+                    }
                     break;
                 case Dialog.BUTTON_NEGATIVE:
                     break;

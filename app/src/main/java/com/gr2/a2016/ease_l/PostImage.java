@@ -188,7 +188,6 @@ public class PostImage extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         return byteArrayOutputStream.toByteArray();
-
                     }
 
                     @Override
