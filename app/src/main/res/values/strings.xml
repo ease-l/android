@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Ease-L</string>
-    <string name="back">назад</string>
-    <string name="create">создать</string>
+    <string name="back">Back</string>
+    <string name="create">Create</string>
     <string name="title_activity_multi_part">BaseActivity</string>
+    <string name="change">Change</string>
+    <string name="delete">Delete</string>
+    <string name="image">Image</string>
+    <string name="project">Project</string>
+    <string name="projects">All projects</string>
 </resources>

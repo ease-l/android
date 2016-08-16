@@ -35,7 +35,8 @@
         android:layout_alignBottom="@+id/back"
         android:layout_toEndOf="@+id/back"
         android:visibility="visible"
-        android:text="все проекты" />
+        android:textAlignment="center"
+        android:text="@string/projects" />
 
     <ListView
         android:orientation="vertical"

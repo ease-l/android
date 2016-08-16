@@ -133,8 +133,8 @@ public class PostImage extends AppCompatActivity {
                                 public void onResponse(JSONObject jsonObject) {
                                     pg.cancel();
                                     Toast.makeText(PostImage.this, "Success", Toast.LENGTH_LONG).show();
-                                    PostImage.this.setResult(RESULT_OK);
-                                    finish();
+                                    Intent intent = new Intent(PostImage.this, ChuzActivity.class);
+                                    startActivity(intent);
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
@@ -151,8 +151,8 @@ public class PostImage extends AppCompatActivity {
                                 public void onResponse(JSONObject jsonObject) {
                                     pg.cancel();
                                     Toast.makeText(PostImage.this, "Success", Toast.LENGTH_LONG).show();
-                                    PostImage.this.setResult(RESULT_OK);
-                                    finish();
+                                    Intent intent = new Intent(PostImage.this, ChuzActivity.class);
+                                    startActivity(intent);
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
@@ -199,10 +199,10 @@ public class PostImage extends AppCompatActivity {
                 mQueue.add(r);
 
             } catch (IOException e) {
-
+                Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(PostImage.this, "Выбери картинку", Toast.LENGTH_LONG).show();
+            Toast.makeText(PostImage.this, "Choose image", Toast.LENGTH_LONG).show();
         }
     }
 

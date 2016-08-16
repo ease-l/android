@@ -56,6 +56,10 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     int positionDialog;
     AlertDialog.Builder alert;
     EditText message;
+    AlertDialog.Builder chuz;
+    String id2;
+    EditText projectName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -365,7 +369,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
         }
 
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            if (item.getTitle().equals("изменить")) {
+            if (item.getTitle().equals("Change")) {
                 if (clicknam < projects.size()) {
 
                 } else {
@@ -429,11 +433,167 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     };
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        clicknam = position;
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+       /* clicknam = position;
         if (actionMode != null)
             actionMode.finish();
-        actionMode = startActionMode(chang);
+        actionMode = startActionMode(chang);*/
+        JsonArrayRequest jsonObjectRequest;
+        if (clicknam < projects.size()) {
+            jsonObjectRequest = new JsonArrayRequest(NetworkAdreses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray jsonArray) {
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = jsonArray.getJSONObject(position);
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                    }
+                    try {
+                        id2 = jsonObject.getString("Id");
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Toast.makeText(getApplicationContext(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            jsonObjectRequest = new JsonArrayRequest(NetworkAdreses.GET_All_IMAGES, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray jsonArray) {
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = jsonArray.getJSONObject(position);
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                    }
+                    try {
+                        id2 = jsonObject.getString("Id");
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Toast.makeText(getApplicationContext(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        RequestQueue queue = Volley.newRequestQueue(ChuzActivity.this);
+        queue.add(jsonObjectRequest);
+        chuz = new AlertDialog.Builder(this);
+        chuz.setTitle("Choose action");
+        chuz.setNeutralButton("Cancel", myClickListener2);
+        chuz.setPositiveButton("Change", myClickListener2);
+        chuz.setNegativeButton("Delete", myClickListener2);
+        chuz.show();
         return false;
     }
+
+
+    DialogInterface.OnClickListener myClickListener2 = new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case Dialog.BUTTON_POSITIVE:
+                    if (clicknam < projects.size()) {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ChuzActivity.this);
+                        alertDialog.setTitle("Change");
+                        alertDialog.setMessage("New project's name:");
+                        alertDialog.setNeutralButton("Cancel", myClickListener3);
+                        alertDialog.setPositiveButton("OK", myClickListener3);
+                        projectName = new EditText(ChuzActivity.this);
+                        projectName.setHint("Name");
+                        alertDialog.setView(projectName);
+                        alertDialog.show();
+                    } else {
+                        Intent intent = new Intent(ChuzActivity.this, PostImage.class);
+                        intent.putExtra("Image_id", id2);
+                        startActivity(intent);
+                    }
+                    break;
+                case Dialog.BUTTON_NEGATIVE:
+                    if (clicknam < projects.size()) {
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + projects.get(clicknam), null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject object) {
+                                Toast.makeText(context, "успех!", Toast.LENGTH_LONG).show();
+                                context.onActivityResult(1, RESULT_OK, null);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+                                Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        request.setRetryPolicy(new DefaultRetryPolicy(
+                                30000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                        requestQueue.add(request);
+                    } else {
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_IMAGE_BY_ID + images.get(clicknam - projects.size()), null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject object) {
+                                Toast.makeText(context, "успех!", Toast.LENGTH_LONG).show();
+                                context.onActivityResult(1, RESULT_OK, null);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+                                Toast.makeText(context, "что-то пошло не так" +
+                                        "( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        request.setRetryPolicy(new DefaultRetryPolicy(
+                                30000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                        requestQueue.add(request);
+                    }
+                    break;
+                case Dialog.BUTTON_NEUTRAL:
+                    break;
+            }
+        }
+    };
+
+    DialogInterface.OnClickListener myClickListener3 = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case Dialog.BUTTON_NEUTRAL:
+                    break;
+                case Dialog.BUTTON_POSITIVE:
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("name", projectName.getText().toString());
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                    }
+                    JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.PUT, "http://ease-l.xyz/Project/" + id2, jsonObject, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject jsonObject) {
+                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(ChuzActivity.this, ChuzActivity.class);
+                            startActivity(intent);
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    RequestQueue queue = Volley.newRequestQueue(ChuzActivity.this);
+                    queue.add(objectRequest);
+                    break;
+            }
+        }
+    };
 }
