@@ -57,10 +57,24 @@ public class BaseActivity extends Activity {
         final ImageView imageView = (ImageView) findViewById(R.id.imageView);
         final RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
         final ProgressDialog pg = new ProgressDialog(BaseActivity.this);
-        pg.setTitle("Downloading");
+        pg.setTitle("Downloading...");
         pg.setCanceledOnTouchOutside(false);
         pg.setCancelable(false);
         pg.show();
+
+        String test_url = NetworkAdreses.GET_IMAGE_BY_ID + image_id + "/" + intent.getStringExtra("Version");
+        JsonObjectRequest testRequest = new JsonObjectRequest(Request.Method.GET, test_url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        queue.add(testRequest);
         String url;
         if (getIntent().hasExtra("Version")) {
             url = NetworkAdreses.GET_IMAGE_BY_ID + image_id + "/" + intent.getStringExtra("Version");
@@ -80,7 +94,7 @@ public class BaseActivity extends Activity {
                         try {
                             ((TextView) findViewById(R.id.textView7)).setText(jsonObject.getString(s));
                         } catch (JSONException e) {
-                            Toast.makeText(BaseActivity.this, "error at downloading", Toast.LENGTH_LONG).show();
+                            Toast.makeText(BaseActivity.this, "Error", Toast.LENGTH_LONG).show();
                         }
                         continue;
                     }
@@ -91,13 +105,13 @@ public class BaseActivity extends Activity {
                         try {
                             commentIdsArray = jsonObject.getJSONArray(s);
                         } catch (JSONException e) {
-                            Toast.makeText(BaseActivity.this, "errorka", Toast.LENGTH_LONG).show();
+                            Toast.makeText(BaseActivity.this, "Error", Toast.LENGTH_LONG).show();
                         }
                         for (int i = 0; i < commentIdsArray.length(); i++) {
                             try {
                                 commentIds.add(commentIdsArray.getString(i));
                             } catch (JSONException e) {
-                                Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
+                                Toast.makeText(BaseActivity.this, "Error", Toast.LENGTH_LONG).show();
                             }
                         }
                         CommentRequests commentRequests = new CommentRequests();
@@ -112,7 +126,7 @@ public class BaseActivity extends Activity {
                     try {
                         value.setText(jsonObject.getString(s));
                     } catch (JSONException e) {
-                        Toast.makeText(BaseActivity.this, "error at downloading", Toast.LENGTH_LONG).show();
+                        Toast.makeText(BaseActivity.this, "Error", Toast.LENGTH_LONG).show();
                     }
                     TextView key = new TextView(BaseActivity.this);
                     key.setText(s + " : ");
@@ -134,19 +148,19 @@ public class BaseActivity extends Activity {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
                             pg.cancel();
-                            Toast.makeText(BaseActivity.this, "error in image", Toast.LENGTH_LONG).show();
+                            Toast.makeText(BaseActivity.this, "Error", Toast.LENGTH_LONG).show();
                         }
                     });
                     requestQueue.add(imageRequest);
                 } catch (JSONException e) {
-                    Toast.makeText(BaseActivity.this, "Bad Image", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BaseActivity.this, "Bad image", Toast.LENGTH_LONG).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 pg.cancel();
-                Toast.makeText(BaseActivity.this, "You are invalid", Toast.LENGTH_LONG).show();
+                Toast.makeText(BaseActivity.this, "Bas file", Toast.LENGTH_LONG).show();
                 Intent root = new Intent(BaseActivity.this, ChuzActivity.class);
                 startActivity(root);
                 finish();

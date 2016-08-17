@@ -107,7 +107,7 @@ public class PostImage extends AppCompatActivity {
                 final MultipartEntityBuilder builder = MultipartEntityBuilder.create();
                 builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
                 builder.addBinaryBody("uploadImage", photoBytes, ContentType.create("image/png"), "image.png");
-
+                
                 final HttpEntity httpEntity = builder.build();
 
                 StringRequest r = new StringRequest(Request.Method.POST, NetworkAdreses.POST_IMAGE, new Response.Listener<String>() {
@@ -117,7 +117,7 @@ public class PostImage extends AppCompatActivity {
                         try {
                             obj = new JSONObject(s);
                         } catch (JSONException e) {
-                            Toast.makeText(PostImage.this, "што таъ пошло не так", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PostImage.this, "Error", Toast.LENGTH_LONG).show();
                         }
                         JSONObject object = new JSONObject();
                         try {
@@ -169,7 +169,7 @@ public class PostImage extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "што таъ пошло не так", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                     }
                 }) {
                     @Override

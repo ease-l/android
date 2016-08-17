@@ -53,7 +53,7 @@ RequestQueue queue;
                             new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject jsonObject) {
-                            Toast.makeText(context,"успех!!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,"Success",Toast.LENGTH_LONG).show();
                             context.setResult(RESULT_OK);
                             finish();
                         }
@@ -61,7 +61,7 @@ RequestQueue queue;
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
                             ((Button)findViewById(R.id.sendpr)).setClickable(true);
-                            Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
                             ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.INVISIBLE);
                         }
                     });
@@ -75,7 +75,7 @@ RequestQueue queue;
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NetworkAdreses.GET_ALL_PROJECTS, object, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject jsonObject) {
-                            Toast.makeText(context,"успех!!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,"Success",Toast.LENGTH_LONG).show();
                             context.setResult(RESULT_OK);
                             finish();
                         }
@@ -83,7 +83,7 @@ RequestQueue queue;
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
                             ((Button)findViewById(R.id.sendpr)).setClickable(true);
-                            Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
                             ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.INVISIBLE);
                         }
                     });
@@ -95,7 +95,7 @@ RequestQueue queue;
                     ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.VISIBLE);
                 }
             } else {
-                Toast.makeText(this,"введите имя, пожалуйсто)",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Please, enter your name",Toast.LENGTH_LONG).show();
             }
         }
     }

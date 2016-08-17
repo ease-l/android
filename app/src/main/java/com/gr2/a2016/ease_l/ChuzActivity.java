@@ -59,7 +59,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     AlertDialog.Builder chuz;
     String id2;
     EditText projectName;
-
+    String id3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-                    Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
                 }
             });
             request.setRetryPolicy(new DefaultRetryPolicy(
@@ -160,7 +160,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-                    Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
                 }
             });
             request.setRetryPolicy(new DefaultRetryPolicy(
@@ -269,7 +269,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
                 }
             });
             request.setRetryPolicy(new DefaultRetryPolicy(
@@ -300,7 +300,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
                     }
                 });
                 request.setRetryPolicy(new DefaultRetryPolicy(
@@ -331,7 +331,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
 
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             Intent intent;
-            if (item.getTitle().equals("проект")) {
+            if (item.getTitle().equals("Project")) {
                 intent = new Intent(context, CreateProject.class);
                 if (root == null) {
                     intent.putExtra("Id", " ");
@@ -341,7 +341,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             } else {
                 intent = new Intent(context, PostImage.class);
                 if (root == null) {
-                    Toast.makeText(context,"Щазъ!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"You can't create a project in root folder",Toast.LENGTH_LONG).show();
                     return false;
                 } else {
                     intent.putExtra("Id", root.getStringExtra("Id"));
@@ -385,14 +385,14 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + projects.get(clicknam), null, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject object) {
-                            Toast.makeText(context, "успех!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
                             context.onActivityResult(1, RESULT_OK, null);
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
                             findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-                            Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
                         }
                     });
                     request.setRetryPolicy(new DefaultRetryPolicy(
@@ -404,15 +404,14 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_IMAGE_BY_ID + images.get(clicknam - projects.size()), null, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject object) {
-                            Toast.makeText(context, "успех!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
                             context.onActivityResult(1, RESULT_OK, null);
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
                             findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-                            Toast.makeText(context, "что-то пошло не так" +
-                                    "( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
                         }
                     });
                     request.setRetryPolicy(new DefaultRetryPolicy(
@@ -518,17 +517,18 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                     break;
                 case Dialog.BUTTON_NEGATIVE:
                     if (clicknam < projects.size()) {
-                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + projects.get(clicknam), null, new Response.Listener<JSONObject>() {
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + id2, null, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject object) {
-                                Toast.makeText(context, "успех!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
                                 context.onActivityResult(1, RESULT_OK, null);
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
                                 findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-                                Toast.makeText(context, "что-то пошло не так( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
                             }
                         });
                         request.setRetryPolicy(new DefaultRetryPolicy(
@@ -537,25 +537,55 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                         requestQueue.add(request);
                     } else {
-                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_IMAGE_BY_ID + images.get(clicknam - projects.size()), null, new Response.Listener<JSONObject>() {
+                        JsonArrayRequest get = new JsonArrayRequest(NetworkAdreses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
                             @Override
-                            public void onResponse(JSONObject object) {
-                                Toast.makeText(context, "успех!", Toast.LENGTH_LONG).show();
-                                context.onActivityResult(1, RESULT_OK, null);
+                            public void onResponse(JSONArray jsonArray) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    try {
+                                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                        String images = jsonObject.getString("Images");
+                                        for (int j = 0; j < images.length() - id2.length(); j++) {
+                                            String s = images.substring(j, j + 1 + id2.length());
+
+                                            if (id2.equals(s)) {
+                                                id3 = jsonObject.getString("Id");
+                                                JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + id3 + "/" + id2, null, new Response.Listener<JSONObject>() {
+                                                    @Override
+                                                    public void onResponse(JSONObject object) {
+                                                        Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
+                                                        context.onActivityResult(1, RESULT_OK, null);
+                                                    }
+                                                }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError volleyError) {
+                                                        findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+                                                        Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+                                                request.setRetryPolicy(new DefaultRetryPolicy(
+                                                        30000,
+                                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                                                requestQueue.add(request);
+                                                break;
+                                            }
+                                        }
+                                    } catch (JSONException e) {
+                                        Toast.makeText(ChuzActivity.this, "Error", Toast.LENGTH_LONG).show();
+                                    }
+                                }
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
-                                findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
-                                Toast.makeText(context, "что-то пошло не так" +
-                                        "( " + volleyError.toString() + " )", Toast.LENGTH_LONG).show();
+                                Toast.makeText(ChuzActivity.this, "Error", Toast.LENGTH_LONG).show();
                             }
                         });
-                        request.setRetryPolicy(new DefaultRetryPolicy(
-                                30000,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                        requestQueue.add(request);
+                        RequestQueue queue = Volley.newRequestQueue(ChuzActivity.this);
+                        queue.add(get);
+
+
+
                     }
                     break;
                 case Dialog.BUTTON_NEUTRAL:
