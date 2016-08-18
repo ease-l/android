@@ -543,7 +543,7 @@ public class ChooseActivity extends Activity implements ListView.OnItemClickList
                                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                                         String images = jsonObject.getString("Images");
                                         for (int j = 0; j < images.length() - id2.length(); j++) {
-                                            String s = images.substring(j, j + 1 + id2.length());
+                                            String s = images.substring(j, j + id2.length());
 
                                             if (id2.equals(s)) {
                                                 id3 = jsonObject.getString("Id");
