@@ -544,10 +544,9 @@ public class ChooseActivity extends Activity implements ListView.OnItemClickList
                                         String images = jsonObject.getString("Images");
                                         for (int j = 0; j < images.length() - id2.length(); j++) {
                                             String s = images.substring(j, j + id2.length());
-
                                             if (id2.equals(s)) {
                                                 id3 = jsonObject.getString("Id");
-                                                JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdresses.GET_PROJECT_BY_ID + id3 + "/" + id2, null, new Response.Listener<JSONObject>() {
+                                                JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdresses.GET_PROJECT_BY_ID + id3 + "/Image/" + id2, null, new Response.Listener<JSONObject>() {
                                                     @Override
                                                     public void onResponse(JSONObject object) {
                                                         Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
