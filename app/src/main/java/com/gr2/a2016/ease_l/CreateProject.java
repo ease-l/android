@@ -15,7 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.gr2.a2016.ease_l.classes.NetworkAdreses;
+import com.gr2.a2016.ease_l.classes.NetworkAdresses;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +49,7 @@ RequestQueue queue;
                     e.printStackTrace();
                 }
                 if (!id.equals(" ")){
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NetworkAdreses.GET_PROJECT_BY_ID + id + "/project", object,
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NetworkAdresses.GET_PROJECT_BY_ID + id + "/project", object,
                             new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject jsonObject) {
@@ -72,7 +72,7 @@ RequestQueue queue;
                     queue.add(request);
                     ((ProgressBar)findViewById(R.id.progressBar2)).setVisibility(View.VISIBLE);
                 }else {
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NetworkAdreses.GET_ALL_PROJECTS, object, new Response.Listener<JSONObject>() {
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NetworkAdresses.GET_ALL_PROJECTS, object, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject jsonObject) {
                             Toast.makeText(context,"Success",Toast.LENGTH_LONG).show();

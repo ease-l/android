@@ -4,47 +4,29 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.api.client.http.json.JsonHttpContent;
-import com.gr2.a2016.ease_l.classes.Comment;
 import com.gr2.a2016.ease_l.classes.CommentRequests;
-import com.gr2.a2016.ease_l.classes.CommentView;
-import com.gr2.a2016.ease_l.classes.Image;
-import com.gr2.a2016.ease_l.classes.NetworkAdreses;
+import com.gr2.a2016.ease_l.classes.NetworkAdresses;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.BufferUnderflowException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 public class BaseActivity extends Activity {
 
@@ -62,7 +44,7 @@ public class BaseActivity extends Activity {
         pg.setCancelable(false);
         pg.show();
 
-        String test_url = NetworkAdreses.GET_IMAGE_BY_ID + image_id + "/" + intent.getStringExtra("Version");
+        String test_url = NetworkAdresses.GET_IMAGE_BY_ID + image_id + "/" + intent.getStringExtra("Version");
         JsonObjectRequest testRequest = new JsonObjectRequest(Request.Method.GET, test_url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -77,9 +59,9 @@ public class BaseActivity extends Activity {
         queue.add(testRequest);
         String url;
         if (getIntent().hasExtra("Version")) {
-            url = NetworkAdreses.GET_IMAGE_BY_ID + image_id + "/" + intent.getStringExtra("Version");
+            url = NetworkAdresses.GET_IMAGE_BY_ID + image_id + "/" + intent.getStringExtra("Version");
         } else {
-            url = NetworkAdreses.GET_IMAGE_BY_ID + image_id;
+            url = NetworkAdresses.GET_IMAGE_BY_ID + image_id;
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(JsonObjectRequest.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -161,7 +143,7 @@ public class BaseActivity extends Activity {
             public void onErrorResponse(VolleyError volleyError) {
                 pg.cancel();
                 Toast.makeText(BaseActivity.this, "Bas file", Toast.LENGTH_LONG).show();
-                Intent root = new Intent(BaseActivity.this, ChuzActivity.class);
+                Intent root = new Intent(BaseActivity.this, ChooseActivity.class);
                 startActivity(root);
                 finish();
             }

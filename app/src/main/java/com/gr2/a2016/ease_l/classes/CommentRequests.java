@@ -10,8 +10,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.gr2.a2016.ease_l.BaseActivity;
-import com.gr2.a2016.ease_l.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +44,7 @@ public class CommentRequests {
     public void loadComments(ArrayList<String> commentIds, final Context context, final LinearLayout linear) {
         for (int i = 0; i < commentIds.size(); i++) {
             RequestQueue queue = Volley.newRequestQueue(context);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, NetworkAdreses.GET_COMMENT + commentIds.get(i), null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, NetworkAdresses.GET_COMMENT + commentIds.get(i), null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     Iterator<String> keys = jsonObject.keys();

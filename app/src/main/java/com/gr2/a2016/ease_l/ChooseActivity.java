@@ -7,8 +7,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
-import android.text.Editable;
 import android.text.InputType;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -30,7 +28,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.gr2.a2016.ease_l.classes.Image;
-import com.gr2.a2016.ease_l.classes.NetworkAdreses;
+import com.gr2.a2016.ease_l.classes.NetworkAdresses;
 import com.gr2.a2016.ease_l.classes.PIAdapter;
 import com.gr2.a2016.ease_l.classes.Project;
 
@@ -43,9 +41,9 @@ import java.util.ArrayList;
 
 
 
-public class ChuzActivity extends Activity implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {
+public class ChooseActivity extends Activity implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {
     RequestQueue requestQueue;
-    ChuzActivity context;
+    ChooseActivity context;
     ArrayList<Project> projects;
     ArrayList<Image> images;
     ArrayList<String> idofprojects;
@@ -86,7 +84,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
         });
         if (root.getBooleanExtra("ferst", true)) {
             root = null;
-            JsonArrayRequest request = new JsonArrayRequest(NetworkAdreses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(NetworkAdresses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
                     findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
@@ -139,7 +137,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             idofprojects = new ArrayList<>();
             projects = new ArrayList<>();
             images = new ArrayList<>();
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, NetworkAdreses.GET_PROJECT_BY_ID + root.getStringExtra("Id"), null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, NetworkAdresses.GET_PROJECT_BY_ID + root.getStringExtra("Id"), null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject object) {
                     try {
@@ -175,13 +173,13 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (root == null) {
-                root = new Intent(context, ChuzActivity.class);
+                root = new Intent(context, ChooseActivity.class);
                 startActivity(root);
                 finish();
             } else {
 
                 JSONObject extra = new JSONObject();
-                Intent intent = new Intent(context, ChuzActivity.class);
+                Intent intent = new Intent(context, ChooseActivity.class);
                 intent.putExtra("Id", root.getStringExtra("Id"));
                 intent.putExtra("Name", root.getStringExtra("Name"));
                 startActivity(intent);
@@ -195,7 +193,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent();
         if (position < projects.size()) {
-            intent = new Intent(context, ChuzActivity.class);
+            intent = new Intent(context, ChooseActivity.class);
             intent.putExtra("Name", projects.get(position).getName());
             intent.putExtra("Id", projects.get(position).getId());
             intent.putExtra("ferst", false);
@@ -203,7 +201,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
         } else {
             positionDialog = position;
             alert.setTitle("Image version");
-            message = new EditText(ChuzActivity.this);
+            message = new EditText(ChooseActivity.this);
             message.setHint("Enter version");
             message.setInputType(InputType.TYPE_CLASS_NUMBER);
             alert.setView(message);
@@ -238,7 +236,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
 
     private void load() {
         if (idofprojects.size() > 0) {
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, NetworkAdreses.GET_PROJECT_BY_ID + idofprojects.get(0), null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, NetworkAdresses.GET_PROJECT_BY_ID + idofprojects.get(0), null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject object) {
                     idofprojects.remove(0);
@@ -279,7 +277,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             requestQueue.add(request);
         } else {
             if (idofimages.size() > 0) {
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, NetworkAdreses.GET_IMAGE_BY_ID + idofimages.get(0), null, new Response.Listener<JSONObject>() {
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, NetworkAdresses.GET_IMAGE_BY_ID + idofimages.get(0), null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject object) {
                         idofimages.remove(0);
@@ -382,7 +380,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             } else {
                 Toast.makeText(context,clicknam,Toast.LENGTH_LONG).show();
                 if (clicknam < projects.size()) {
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + projects.get(clicknam), null, new Response.Listener<JSONObject>() {
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdresses.GET_PROJECT_BY_ID + projects.get(clicknam), null, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject object) {
                             Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
@@ -401,7 +399,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     requestQueue.add(request);
                 } else {
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_IMAGE_BY_ID + images.get(clicknam - projects.size()), null, new Response.Listener<JSONObject>() {
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdresses.GET_IMAGE_BY_ID + images.get(clicknam - projects.size()), null, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject object) {
                             Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
@@ -439,7 +437,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
         actionMode = startActionMode(chang);*/
         JsonArrayRequest jsonObjectRequest;
         if (clicknam < projects.size()) {
-            jsonObjectRequest = new JsonArrayRequest(NetworkAdreses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
+            jsonObjectRequest = new JsonArrayRequest(NetworkAdresses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
                     JSONObject jsonObject = null;
@@ -461,7 +459,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                 }
             });
         } else {
-            jsonObjectRequest = new JsonArrayRequest(NetworkAdreses.GET_All_IMAGES, new Response.Listener<JSONArray>() {
+            jsonObjectRequest = new JsonArrayRequest(NetworkAdresses.GET_All_IMAGES, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
                     JSONObject jsonObject = null;
@@ -483,7 +481,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                 }
             });
         }
-        RequestQueue queue = Volley.newRequestQueue(ChuzActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(ChooseActivity.this);
         queue.add(jsonObjectRequest);
         chuz = new AlertDialog.Builder(this);
         chuz.setTitle("Choose action");
@@ -500,24 +498,24 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
             switch (which) {
                 case Dialog.BUTTON_POSITIVE:
                     if (clicknam < projects.size()) {
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ChuzActivity.this);
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ChooseActivity.this);
                         alertDialog.setTitle("Change");
                         alertDialog.setMessage("New project's name:");
                         alertDialog.setNeutralButton("Cancel", myClickListener3);
                         alertDialog.setPositiveButton("OK", myClickListener3);
-                        projectName = new EditText(ChuzActivity.this);
+                        projectName = new EditText(ChooseActivity.this);
                         projectName.setHint("Name");
                         alertDialog.setView(projectName);
                         alertDialog.show();
                     } else {
-                        Intent intent = new Intent(ChuzActivity.this, PostImage.class);
+                        Intent intent = new Intent(ChooseActivity.this, PostImage.class);
                         intent.putExtra("Image_id", id2);
                         startActivity(intent);
                     }
                     break;
                 case Dialog.BUTTON_NEGATIVE:
                     if (clicknam < projects.size()) {
-                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + id2, null, new Response.Listener<JSONObject>() {
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdresses.GET_PROJECT_BY_ID + id2, null, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject object) {
                                 Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
@@ -537,7 +535,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                         requestQueue.add(request);
                     } else {
-                        JsonArrayRequest get = new JsonArrayRequest(NetworkAdreses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
+                        JsonArrayRequest get = new JsonArrayRequest(NetworkAdresses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray jsonArray) {
                                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -549,7 +547,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
 
                                             if (id2.equals(s)) {
                                                 id3 = jsonObject.getString("Id");
-                                                JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdreses.GET_PROJECT_BY_ID + id3 + "/" + id2, null, new Response.Listener<JSONObject>() {
+                                                JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, NetworkAdresses.GET_PROJECT_BY_ID + id3 + "/" + id2, null, new Response.Listener<JSONObject>() {
                                                     @Override
                                                     public void onResponse(JSONObject object) {
                                                         Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
@@ -571,17 +569,17 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                                             }
                                         }
                                     } catch (JSONException e) {
-                                        Toast.makeText(ChuzActivity.this, "Error", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(ChooseActivity.this, "Error", Toast.LENGTH_LONG).show();
                                     }
                                 }
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError volleyError) {
-                                Toast.makeText(ChuzActivity.this, "Error", Toast.LENGTH_LONG).show();
+                                Toast.makeText(ChooseActivity.this, "Error", Toast.LENGTH_LONG).show();
                             }
                         });
-                        RequestQueue queue = Volley.newRequestQueue(ChuzActivity.this);
+                        RequestQueue queue = Volley.newRequestQueue(ChooseActivity.this);
                         queue.add(get);
 
 
@@ -611,7 +609,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                         @Override
                         public void onResponse(JSONObject jsonObject) {
                             Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(ChuzActivity.this, ChuzActivity.class);
+                            Intent intent = new Intent(ChooseActivity.this, ChooseActivity.class);
                             startActivity(intent);
                         }
                     }, new Response.ErrorListener() {
@@ -620,7 +618,7 @@ public class ChuzActivity extends Activity implements ListView.OnItemClickListen
                             Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                         }
                     });
-                    RequestQueue queue = Volley.newRequestQueue(ChuzActivity.this);
+                    RequestQueue queue = Volley.newRequestQueue(ChooseActivity.this);
                     queue.add(objectRequest);
                     break;
             }
