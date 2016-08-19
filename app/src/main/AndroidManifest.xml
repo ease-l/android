@@ -11,7 +11,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChooseActivity"
+        <activity
+            android:name=".ChooseActivity"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,13 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BaseActivity"
+        <activity
+            android:name=".BaseActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
             android:name=".CreateProject"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".PostImage"
+        <activity
+            android:name=".PostImage"
             android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity android:name=".ComentActivity"></activity>
     </application>
 
 </manifest>
