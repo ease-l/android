@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
 
 public class ImageCanvas {
+
     protected ImageView imageView;
 
     public ImageCanvas(ImageView imageView) {

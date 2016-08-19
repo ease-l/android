@@ -1,6 +1,7 @@
 package com.gr2.a2016.ease_l.classes;
 
 import android.content.Context;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -15,6 +16,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 public class CommentRequests {
@@ -41,7 +44,7 @@ public class CommentRequests {
         queue.add(jsonObjectRequest);
     }
 
-    public void loadComments(ArrayList<String> commentIds, final Context context, final LinearLayout linear) {
+    public void loadComments(ArrayList<String> commentIds, final Context context, final LinearLayout linear, final ImageView imageView) {
         for (int i = 0; i < commentIds.size(); i++) {
             RequestQueue queue = Volley.newRequestQueue(context);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, NetworkAdresses.GET_COMMENT + commentIds.get(i), null, new Response.Listener<JSONObject>() {
@@ -78,6 +81,15 @@ public class CommentRequests {
                         if (key.equals("Id")) {
                             try {
                                 id = jsonObject.getString(key);
+                            } catch (JSONException e) {
+                                Toast.makeText(context, "error", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        if (key.equals("attachment")) {
+                            try {
+                                JSONObject attachment = jsonObject.getJSONObject(key);
+                                ImageCanvas imageCanvas = new ImageCanvas(imageView);
+                                imageCanvas.draw(attachment.getInt("x1"),attachment.getInt("y1"),attachment.getInt("x2"),attachment.getInt("y2"));
                             } catch (JSONException e) {
                                 Toast.makeText(context, "error", Toast.LENGTH_LONG).show();
                             }
