@@ -128,8 +128,8 @@ public class PostImage extends AppCompatActivity {
                                 public void onResponse(JSONObject jsonObject) {
                                     pg.cancel();
                                     Toast.makeText(PostImage.this, "Success", Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(PostImage.this, ChooseActivity.class);
-                                    startActivity(intent);
+                                    PostImage.this.setResult(RESULT_OK);
+                                    finish();
                                 }
                             }, new Response.ErrorListener() {
                                 @Override

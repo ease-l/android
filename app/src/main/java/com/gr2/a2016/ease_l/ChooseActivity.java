@@ -198,7 +198,7 @@ public class ChooseActivity extends Activity implements ListView.OnItemClickList
             intent.putExtra("Id", projects.get(position).getId());
             intent.putExtra("ferst", false);
             startActivity(intent);
-        } else {
+        } else {/*
             positionDialog = position;
             alert.setTitle("Image version");
             message = new EditText(ChooseActivity.this);
@@ -208,31 +208,12 @@ public class ChooseActivity extends Activity implements ListView.OnItemClickList
             alert.setPositiveButton("OK", myClickListener);
             alert.setNeutralButton("Last version", myClickListener);
             alert.setNegativeButton("Cancel", myClickListener);
-            alert.show();
+            alert.show();*/
+            Intent intent2 = new Intent(context, BaseActivity.class);
+            intent2.putExtra("Id", images.get(positionDialog - projects.size()).getId());
+            startActivity(intent2);
         }
     }
-
-    DialogInterface.OnClickListener myClickListener = new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case Dialog.BUTTON_POSITIVE:
-                    if (message.getText().toString().length() > 0) {
-                        Intent intent = new Intent(context, BaseActivity.class);
-                        intent.putExtra("Id", images.get(positionDialog - projects.size()).getId());
-                        intent.putExtra("Version", message.getText().toString());
-                        startActivity(intent);
-                    }
-                    break;
-                case Dialog.BUTTON_NEGATIVE:
-                    break;
-                case DialogInterface.BUTTON_NEUTRAL:
-                    Intent intent2 = new Intent(context, BaseActivity.class);
-                    intent2.putExtra("Id", images.get(positionDialog - projects.size()).getId());
-                    startActivity(intent2);
-                    break;
-            }
-        }
-    };
 
     private void load() {
         if (idofprojects.size() > 0) {
