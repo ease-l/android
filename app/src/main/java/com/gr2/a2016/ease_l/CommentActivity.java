@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
-public class ComentActivity extends AppCompatActivity {
+public class CommentActivity extends AppCompatActivity {
 ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
