@@ -39,7 +39,7 @@ public class BaseActivity extends Activity {
         final ImageView imageView = (ImageView) findViewById(R.id.imageView);
         final RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
         final ProgressDialog pg = new ProgressDialog(BaseActivity.this);
-        pg.setTitle("Downloading...");
+        pg.setTitle("Uploading...");
         pg.setCanceledOnTouchOutside(false);
         pg.setCancelable(false);
         pg.show();
