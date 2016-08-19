@@ -9,22 +9,84 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".CommentActivity">
 
-    <ImageView
+    <ViewSwitcher
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView3"
+        android:id="@+id/viewSwitcher"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true" >
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignTop="@+id/imageView3"
-        android:layout_alignStart="@+id/imageView3"
-        android:layout_below="@+id/imageView3"
-        android:layout_alignLeft="@+id/imageView3"
-        android:layout_toRightOf="@+id/imageView3"
-        android:layout_alignBottom="@+id/imageView3"
-        android:layout_alignEnd="@+id/imageView3"></LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView3"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignEnd="@+id/imageView3"
+                android:layout_alignStart="@+id/imageView3"
+                android:layout_alignTop="@+id/imageView3"
+                android:layout_alignBottom="@+id/imageView3"></LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:id="@+id/button2"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send"
+                android:id="@+id/button3"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/scrollView"
+                android:layout_below="@+id/button2"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="false"
+                android:fillViewport="false">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/editText2"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true" />
+                </LinearLayout>
+            </ScrollView>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back to image"
+                android:id="@+id/button4"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+    </ViewSwitcher>
 </RelativeLayout>
