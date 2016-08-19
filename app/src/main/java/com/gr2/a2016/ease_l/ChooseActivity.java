@@ -511,6 +511,7 @@ public class ChooseActivity extends Activity implements ListView.OnItemClickList
                         Intent intent = new Intent(ChooseActivity.this, PostImage.class);
                         intent.putExtra("Image_id", id2);
                         startActivity(intent);
+                        finish();
                     }
                     break;
                 case Dialog.BUTTON_NEGATIVE:
@@ -534,6 +535,7 @@ public class ChooseActivity extends Activity implements ListView.OnItemClickList
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                         requestQueue.add(request);
+                        finish();
                     } else {
                         JsonArrayRequest get = new JsonArrayRequest(NetworkAdresses.GET_ALL_PROJECTS, new Response.Listener<JSONArray>() {
                             @Override
@@ -580,7 +582,7 @@ public class ChooseActivity extends Activity implements ListView.OnItemClickList
                         });
                         RequestQueue queue = Volley.newRequestQueue(ChooseActivity.this);
                         queue.add(get);
-
+                        finish();
 
 
                     }
@@ -619,6 +621,7 @@ public class ChooseActivity extends Activity implements ListView.OnItemClickList
                     });
                     RequestQueue queue = Volley.newRequestQueue(ChooseActivity.this);
                     queue.add(objectRequest);
+                    finish();
                     break;
             }
         }

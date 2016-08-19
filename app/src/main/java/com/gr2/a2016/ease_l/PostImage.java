@@ -90,7 +90,7 @@ public class PostImage extends AppCompatActivity {
         if (image_selected && name.getText().toString().length() > 0) {
             try {
                 final ProgressDialog pg = new ProgressDialog(PostImage.this);
-                pg.setTitle("Downloading");
+                pg.setTitle("Uploading...");
                 pg.setCanceledOnTouchOutside(false);
                 pg.setCancelable(false);
                 pg.show();
