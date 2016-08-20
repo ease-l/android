@@ -3,7 +3,10 @@ package com.gr2.a2016.ease_l.classes;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.ActionMode;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +34,7 @@ public class CommentView {
         commentName.setText(comment.getName());
         commentName.setTextSize(18);
         commentName.setTextColor(Color.BLACK);
+       // commentName.setLayoutParams(params);
 
         TextView commentText = new TextView(context);
         commentText.setText(comment.getText());
@@ -41,14 +45,17 @@ public class CommentView {
         version2.setText(comment.getVersion());
         version2.setTextSize(10);
         version2.setTextColor(Color.BLUE);
+    //    version2.setLayoutParams(params);
 
         LinearLayout horizontal = new LinearLayout(context);
         horizontal.setOrientation(LinearLayout.HORIZONTAL);
         horizontal.addView(authorName);
         horizontal.addView(commentText);
-    //    horizontal.setLayoutParams(params);
+      //  horizontal.setLayoutParams(params);
         vertical.addView(commentName);
         vertical.addView(horizontal);
         vertical.addView(version2);
     }
+
+
 }

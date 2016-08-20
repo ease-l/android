@@ -49,8 +49,8 @@ public class ImageCanvas {
         imageView.setImageBitmap(mutableBitmap);
     }
 
-    public void drawNoBackground(int x1, int y1, int x2, int y2, int width, int height){
-        Bitmap bitmap = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+    public void drawNoBackground(int x1, int y1, int x2, int y2, int width, int height) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Paint paint = new Paint();
         paint.setStrokeWidth(2);
         ColorFilter filter = new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);

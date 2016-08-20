@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+
+    android:padding="6dip">
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="User name"
+        android:id="@+id/userName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:gravity="right" />
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Comment name"
+        android:id="@+id/commentName"
+        android:textSize="16dp"
+        android:textColor="#000000"
+        android:layout_below="@+id/userName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Comment text"
+        android:id="@+id/commentText"
+        android:layout_below="@+id/commentName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="#000000"
+        android:textSize="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Version"
+        android:id="@+id/version"
+        android:layout_alignTop="@+id/commentText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="10dp"
+        android:textColor="#32beff"
+        android:gravity="right" />
+</RelativeLayout>

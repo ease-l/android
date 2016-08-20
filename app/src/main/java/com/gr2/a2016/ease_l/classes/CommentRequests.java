@@ -111,7 +111,7 @@ public class CommentRequests {
         }
     }
 
-    public void updateComment(String name, String text, final Context context) {
+    public void updateComment(String name, String text, final Context context, String id) {
         RequestQueue queue = Volley.newRequestQueue(context);
         JSONObject jsonObject = new JSONObject();
         try {
@@ -120,15 +120,15 @@ public class CommentRequests {
         } catch (JSONException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, "http://ease-l.apphb.com/Comment/id577287bc18aa6a61c4ec4ef5", jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, "http://ease-l.xyz.com/Comment/"+id, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                Toast.makeText(context, jsonObject.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(context, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
             }
         });
         queue.add(jsonObjectRequest);
