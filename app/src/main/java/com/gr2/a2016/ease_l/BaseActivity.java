@@ -26,6 +26,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.gr2.a2016.ease_l.classes.CommentRequests;
+import com.gr2.a2016.ease_l.classes.ImageCanvas;
 import com.gr2.a2016.ease_l.classes.NetworkAdresses;
 
 import org.json.JSONArray;
@@ -42,7 +43,6 @@ public class BaseActivity extends Activity {
     String imageId;
     Bitmap imageBitmap;
     EditText message;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,11 +83,11 @@ public class BaseActivity extends Activity {
 
 
         String url;
-       // if (getIntent().hasExtra("Version")) {
-         //   url = NetworkAdresses.GET_IMAGE_BY_ID + imageId + "/" + intent.getStringExtra("Version");
-        //} else {
+        if (getIntent().hasExtra("Version")) {
+            url = NetworkAdresses.GET_IMAGE_BY_ID + imageId + "/" + intent.getStringExtra("Version");
+        } else {
             url = NetworkAdresses.GET_IMAGE_BY_ID + imageId;
-       // }
+        }
         final ArrayList<String> commentIds = new ArrayList<>();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(JsonObjectRequest.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -108,10 +108,6 @@ public class BaseActivity extends Activity {
                         continue;
                     }
                     JSONArray commentIdsArray = new JSONArray();
-
-
-
-
                     if (s.equals("Comments")) {
                         try {
                             commentIdsArray = jsonObject.getJSONArray(s);
@@ -124,6 +120,7 @@ public class BaseActivity extends Activity {
                             } catch (JSONException e) {
                                 Toast.makeText(BaseActivity.this, "Error", Toast.LENGTH_LONG).show();
                             }
+
                         }
 
                         continue;
@@ -163,7 +160,7 @@ public class BaseActivity extends Activity {
                 });
                 ((LinearLayout) findViewById(R.id.linear)).addView(button);
                 CommentRequests commentRequests = new CommentRequests();
-                commentRequests.loadComments(commentIds, BaseActivity.this, (LinearLayout) findViewById(R.id.linear));
+                commentRequests.loadComments(commentIds, BaseActivity.this, (LinearLayout) findViewById(R.id.linear),(ImageView) findViewById(R.id.imageView));
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(BaseActivity.this);
                     ImageRequest imageRequest = new ImageRequest(jsonObject.getString("Url"), new Response.Listener<Bitmap>() {
