@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ViewSwitcher;
 
-public class CommentActivity extends AppCompatActivity implements View.OnTouchListener, View.OnLongClickListener{
+public class CommentActivity extends AppCompatActivity implements View.OnTouchListener, View.OnLongClickListener, View.OnClickListener {
     ImageView imageView;
     ImageView pointsView;
     Intent intent;
@@ -25,6 +28,11 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
     Point finger2doun;
     Point finger3doun;
     boolean longclick;
+    Button back;
+    Button backtoimg;
+    Button post;
+    EditText text;
+    ViewSwitcher switcher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +56,17 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
         pointsView = (ImageView)findViewById(R.id.imageView4);
         pointsView.setOnTouchListener(this);
         pointsView.setOnLongClickListener(this);
+
+        back = (Button)findViewById(R.id.button2);
+        back.setOnClickListener(this);
+
+        post = (Button)findViewById(R.id.button3);
+        post.setOnClickListener(this);
+
+        backtoimg = (Button)findViewById(R.id.button4);
+        backtoimg.setOnClickListener(this);
+
+        switcher = (ViewSwitcher)findViewById(R.id.viewSwitcher);
     }
 
     @Override
@@ -59,5 +78,20 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
     public boolean onTouch(View v, MotionEvent event) {
 
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.button2:{//back
+                finish();
+            }
+            case R.id.button3:{//post
+
+            }
+            case R.id.button4:{//back to image
+                switcher.showPrevious();
+            }
+        }
     }
 }
