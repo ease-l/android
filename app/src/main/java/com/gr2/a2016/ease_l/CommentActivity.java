@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 public class CommentActivity extends AppCompatActivity implements View.OnTouchListener, View.OnLongClickListener, View.OnClickListener {
@@ -21,18 +22,16 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
     CommentActivity context;
     Bitmap image;
     String imageid;
-    Point finger1;
-    Point finger2;
-    Point finger3;
     Point finger1doun;
     Point finger2doun;
-    Point finger3doun;
+    Point skrynsyze;
     boolean longclick;
     Button back;
     Button backtoimg;
     Button post;
     EditText text;
     ViewSwitcher switcher;
+    int count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +70,44 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
 
     @Override
     public boolean onLongClick(View v) {
+        longclick =true;
         return false;
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:{//первый палец
+                Toast.makeText(context,"первый палец",Toast.LENGTH_LONG).show();
+                if (skrynsyze == null){
+                    skrynsyze = new Point(imageView.getWidth(),imageView.getHeight());
+                }
+                finger1doun = new Point((int) event.getX(),(int)event.getY());
+                count =1;
+            }
+            case MotionEvent.ACTION_POINTER_DOWN:{//еще палец
+                if (!longclick){
+                    if(finger2doun!=null){
+                        finger2doun = null;
+                        finger1doun = null;
+                        switcher.showNext();
+                        count = 0;
+                    }else {
+                        finger2doun = new Point();
+                        count = 2;
+                    }
+                }
+            }
+            case MotionEvent.ACTION_UP:{//последний палец убран
 
+            }
+            case MotionEvent.ACTION_POINTER_UP:{//один из пальцев убран
+
+            }
+            case MotionEvent.ACTION_MOVE:{//пальцы движутся
+
+            }
+        }
         return false;
     }
 
