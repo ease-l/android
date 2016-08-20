@@ -159,8 +159,6 @@ public class BaseActivity extends Activity {
                     }
                 });
                 ((LinearLayout) findViewById(R.id.linear)).addView(button);
-                CommentRequests commentRequests = new CommentRequests();
-                commentRequests.loadComments(commentIds, BaseActivity.this, (LinearLayout) findViewById(R.id.linear),(ImageView) findViewById(R.id.imageView));
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(BaseActivity.this);
                     ImageRequest imageRequest = new ImageRequest(jsonObject.getString("Url"), new Response.Listener<Bitmap>() {
@@ -169,6 +167,8 @@ public class BaseActivity extends Activity {
                             imageView.setImageBitmap(bitmap);
                             imageBitmap = bitmap;
                             pg.cancel();
+                            CommentRequests commentRequests = new CommentRequests();
+                            commentRequests.loadComments(commentIds, BaseActivity.this, (LinearLayout) findViewById(R.id.linear), (ImageView) findViewById(R.id.imageView),bitmap);
                         }
                     }, 0, 0, null, new Response.ErrorListener() {
                         @Override

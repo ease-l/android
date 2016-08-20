@@ -1,6 +1,7 @@
 package com.gr2.a2016.ease_l.classes;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -44,7 +45,7 @@ public class CommentRequests {
         queue.add(jsonObjectRequest);
     }
 
-    public void loadComments(ArrayList<String> commentIds, final Context context, final LinearLayout linear, final ImageView imageView) {
+    public void loadComments(ArrayList<String> commentIds, final Context context, final LinearLayout linear, final ImageView imageView, final Bitmap bitmap) {
         for (int i = 0; i < commentIds.size(); i++) {
             RequestQueue queue = Volley.newRequestQueue(context);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, NetworkAdresses.GET_COMMENT + commentIds.get(i), null, new Response.Listener<JSONObject>() {
@@ -88,8 +89,9 @@ public class CommentRequests {
                         if (key.equals("attachment")) {
                             try {
                                 JSONObject attachment = jsonObject.getJSONObject(key);
-                                ImageCanvas imageCanvas = new ImageCanvas(imageView);
-                                imageCanvas.draw(attachment.getInt("x1"),attachment.getInt("y1"),attachment.getInt("x2"),attachment.getInt("y2"));
+                                ImageCanvas imageCanvas = new ImageCanvas(bitmap,imageView);
+                                // imageCanvas.draw(attachment.getInt("x1"),attachment.getInt("y1"),attachment.getInt("x2"),attachment.getInt("y2"));
+                                imageCanvas.draw(100, 100, 150, 130);
                             } catch (JSONException e) {
                                 Toast.makeText(context, "error", Toast.LENGTH_LONG).show();
                             }

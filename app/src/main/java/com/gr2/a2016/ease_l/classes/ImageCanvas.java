@@ -11,18 +11,21 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PictureDrawable;
 import android.widget.ImageView;
 
 public class ImageCanvas {
 
+    protected Bitmap bitmap;
     protected ImageView imageView;
 
-    public ImageCanvas(ImageView imageView) {
+    public ImageCanvas(Bitmap bitmap, ImageView imageView) {
+        this.bitmap = bitmap;
         this.imageView = imageView;
     }
 
     public void draw(int x1, int y1, int x2, int y2) {
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         Paint paint = new Paint();
         paint.setStrokeWidth(2);
         ColorFilter filter = new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
@@ -36,9 +39,10 @@ public class ImageCanvas {
             canvas.drawCircle(x1, y1, 5, paint);
         } else {
             Rect rect = new Rect(x1, y1, x2, y2);
-            rect.setEmpty();
+            paint.setStyle(Paint.Style.STROKE);
             canvas.drawBitmap(mutableBitmap, null, rect, paint);
         }
         imageView.setImageBitmap(mutableBitmap);
     }
+
 }
