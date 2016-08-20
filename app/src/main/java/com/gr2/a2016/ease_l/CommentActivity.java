@@ -23,8 +23,10 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
     CommentActivity context;
     Bitmap image;
     String imageid;
-    Point finger1doun;
+    Point finger1;
     Point skrynsyze;
+    Point commentpoint;
+    boolean draw;
     boolean longclick;
     Button back;
     Button backtoimg;
@@ -40,6 +42,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
         setContentView(R.layout.activity_coment);
         context = this;
         intent = getIntent();
+        draw =false;
         image = BitmapFactory.decodeByteArray(intent.getByteArrayExtra("bytes"), 0, intent.getByteArrayExtra("bytes").length);
 
         if (image.getHeight() >= image.getWidth())
@@ -73,6 +76,16 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
     @Override
     public boolean onLongClick(View v) {
         longclick = true;
+        if(count == 1){
+            draw = true;
+            commentpoint = new Point(finger1.x,finger1.y);
+            canvas.drawNoBackground(finger1.x,finger1.y,-1,-1);
+        }
+        if(count == 2){
+            draw = false;
+            commentpoint = null;
+            pointsView.setImageBitmap(null);
+        }
         return false;
     }
 
@@ -85,7 +98,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
                     skrynsyze = new Point(imageView.getWidth(), imageView.getHeight());
                     canvas = new ImageCanvas(pointsView);
                 }
-                finger1doun = new Point((int) event.getX(), (int) event.getY());
+                finger1 = new Point((int) event.getX(), (int) event.getY());
                 count = 1;
                 break;
 
@@ -93,7 +106,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
             case MotionEvent.ACTION_POINTER_DOWN: //еще палец
                 if (!longclick) {
                     if (count == 2) {
-                        finger1doun = null;
+                        Point finger1 = null;
                         switcher.showNext();
                         count = 0;
                         break;
@@ -118,9 +131,14 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
                 break;
 
             case MotionEvent.ACTION_MOVE: //пальцы движутся
-                canvas.drawNoBackground((int) event.getX(), (int) event.getY(), -1, -1);
+                if(count == 1){
+                    finger1 = new Point((int)event.getX(),(int)event.getY());
+                    if(draw){
+                        commentpoint = new Point(finger1.x,finger1.y);
+                        canvas.drawNoBackground(finger1.x,finger1.y,-1,-1);
+                    }
+                }
                 break;
-
 
         }
         return false;
