@@ -12,8 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import com.gr2.a2016.ease_l.classes.ImageCanvas;
 
 public class CommentActivity extends AppCompatActivity implements View.OnTouchListener, View.OnLongClickListener, View.OnClickListener {
     ImageView imageView;
@@ -23,7 +24,6 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
     Bitmap image;
     String imageid;
     Point finger1doun;
-    Point finger2doun;
     Point skrynsyze;
     boolean longclick;
     Button back;
@@ -32,6 +32,8 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
     EditText text;
     ViewSwitcher switcher;
     int count;
+    ImageCanvas canvas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,87 +42,100 @@ public class CommentActivity extends AppCompatActivity implements View.OnTouchLi
         intent = getIntent();
         image = BitmapFactory.decodeByteArray(intent.getByteArrayExtra("bytes"), 0, intent.getByteArrayExtra("bytes").length);
 
-        if(image.getHeight()>=image.getWidth())
+        if (image.getHeight() >= image.getWidth())
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         else
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        imageView = (ImageView)findViewById(R.id.imageView3);
+        imageView = (ImageView) findViewById(R.id.imageView3);
         imageView.setImageBitmap(image);
 
         imageid = intent.getStringExtra("id");
 
         longclick = false;
 
-        pointsView = (ImageView)findViewById(R.id.imageView4);
+        pointsView = (ImageView) findViewById(R.id.imageView4);
         pointsView.setOnTouchListener(this);
         pointsView.setOnLongClickListener(this);
 
-        back = (Button)findViewById(R.id.button2);
+        back = (Button) findViewById(R.id.button2);
         back.setOnClickListener(this);
 
-        post = (Button)findViewById(R.id.button3);
+        post = (Button) findViewById(R.id.button3);
         post.setOnClickListener(this);
 
-        backtoimg = (Button)findViewById(R.id.button4);
+        backtoimg = (Button) findViewById(R.id.button4);
         backtoimg.setOnClickListener(this);
 
-        switcher = (ViewSwitcher)findViewById(R.id.viewSwitcher);
+        switcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
     }
 
     @Override
     public boolean onLongClick(View v) {
-        longclick =true;
+        longclick = true;
         return false;
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:{//первый палец
-                Toast.makeText(context,"первый палец",Toast.LENGTH_LONG).show();
-                if (skrynsyze == null){
-                    skrynsyze = new Point(imageView.getWidth(),imageView.getHeight());
+        int actionMask = event.getActionMasked();
+        switch (actionMask) {
+            case MotionEvent.ACTION_DOWN: //первый палец
+                if (skrynsyze == null) {
+                    skrynsyze = new Point(imageView.getWidth(), imageView.getHeight());
+                    canvas = new ImageCanvas(pointsView);
                 }
-                finger1doun = new Point((int) event.getX(),(int)event.getY());
-                count =1;
-            }
-            case MotionEvent.ACTION_POINTER_DOWN:{//еще палец
-                if (!longclick){
-                    if(finger2doun!=null){
-                        finger2doun = null;
+                finger1doun = new Point((int) event.getX(), (int) event.getY());
+                count = 1;
+                break;
+
+
+            case MotionEvent.ACTION_POINTER_DOWN: //еще палец
+                if (!longclick) {
+                    if (count == 2) {
                         finger1doun = null;
                         switcher.showNext();
                         count = 0;
-                    }else {
-                        finger2doun = new Point();
-                        count = 2;
+                        break;
+
+                    } else {
+                        if (count == 1) {
+                            count = 2;
+                            break;
+                        }
                     }
                 }
-            }
-            case MotionEvent.ACTION_UP:{//последний палец убран
 
-            }
-            case MotionEvent.ACTION_POINTER_UP:{//один из пальцев убран
+            case MotionEvent.ACTION_UP: //последний палец убран
+                longclick = false;
+                count = 0;
+                break;
 
-            }
-            case MotionEvent.ACTION_MOVE:{//пальцы движутся
+            case MotionEvent.ACTION_POINTER_UP: //один из пальцев убран
+                if (count == 2) {
+                    count = 1;
+                }
+                break;
 
-            }
+            case MotionEvent.ACTION_MOVE: //пальцы движутся
+                canvas.drawNoBackground((int) event.getX(), (int) event.getY(), -1, -1);
+                break;
+
+
         }
         return false;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.button2:{//back
+        switch (v.getId()) {
+            case R.id.button2: {//back
                 finish();
             }
-            case R.id.button3:{//post
+            case R.id.button3: {//post
 
             }
-            case R.id.button4:{//back to image
+            case R.id.button4: {//back to image
                 switcher.showPrevious();
             }
         }
