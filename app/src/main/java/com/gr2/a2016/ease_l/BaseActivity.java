@@ -193,8 +193,7 @@ public class BaseActivity extends ListActivity implements ListView.OnItemLongCli
                                                 try {
                                                     JSONObject attachment = jsonObject.getJSONObject(key);
                                                     ImageCanvas imageCanvas = new ImageCanvas(bitmap, imageView);
-                                                    // imageCanvas.draw(attachment.getInt("x1"),attachment.getInt("y1"),attachment.getInt("x2"),attachment.getInt("y2"));
-                                                    imageCanvas.draw(100, 100, 150, 130);
+                                                    imageCanvas.draw(bitmap.getWidth() * attachment.getInt("upleft") / 1000, bitmap.getHeight() * attachment.getInt("upright") / 1000, bitmap.getWidth() * attachment.getInt("downleft") / 1000, bitmap.getHeight() * attachment.getInt("downright") / 1000);
                                                 } catch (JSONException e) {
                                                     Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
                                                 }
