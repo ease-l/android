@@ -25,6 +25,7 @@
             android:id="@+id/button3"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
+
     </RelativeLayout>
 
     <ScrollView
@@ -57,7 +58,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/linear"
-                android:orientation="vertical"/>
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/android:list" />
 
         </LinearLayout>
     </ScrollView>

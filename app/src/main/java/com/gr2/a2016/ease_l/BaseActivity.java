@@ -3,6 +3,7 @@ package com.gr2.a2016.ease_l;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,11 +11,14 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.ActionMode;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +27,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.gr2.a2016.ease_l.classes.Comment;
 import com.gr2.a2016.ease_l.classes.CommentRequests;
 import com.gr2.a2016.ease_l.classes.ImageCanvas;
 import com.gr2.a2016.ease_l.classes.NetworkAdresses;
+import com.gr2.a2016.ease_l.classes.Person;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,16 +44,23 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends ListActivity implements ListView.OnItemLongClickListener{
 
     String name;
     String imageId;
     Bitmap imageBitmap;
     EditText message;
+    ArrayList<Comment> m_parts = new ArrayList<>();
+    ItemAdapter m_adapter;
+    int position2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        ((ListView) findViewById(android.R.id.list)).setOnItemLongClickListener(this);
+        m_adapter = new ItemAdapter(BaseActivity.this, R.layout.list_item, m_parts);
+        setListAdapter(m_adapter);
         final Intent intent = getIntent();
         imageId = intent.getStringExtra("Id");
         final ImageView imageView = (ImageView) findViewById(R.id.imageView);
@@ -56,6 +70,7 @@ public class BaseActivity extends Activity {
         pg.setCanceledOnTouchOutside(false);
         pg.setCancelable(false);
         pg.show();
+
         Button back = (Button) findViewById(R.id.button2);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,12 +178,44 @@ public class BaseActivity extends Activity {
                     RequestQueue requestQueue = Volley.newRequestQueue(BaseActivity.this);
                     ImageRequest imageRequest = new ImageRequest(jsonObject.getString("Url"), new Response.Listener<Bitmap>() {
                         @Override
-                        public void onResponse(Bitmap bitmap) {
+                        public void onResponse(final Bitmap bitmap) {
                             imageView.setImageBitmap(bitmap);
                             imageBitmap = bitmap;
                             pg.cancel();
-                            CommentRequests commentRequests = new CommentRequests();
-                            commentRequests.loadComments(commentIds, BaseActivity.this, (LinearLayout) findViewById(R.id.linear), (ImageView) findViewById(R.id.imageView),bitmap);
+                            for (int i = 0; i < commentIds.size(); i++) {
+                                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, NetworkAdresses.GET_COMMENT + commentIds.get(i), null, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject jsonObject) {
+                                        Iterator<String> keys1= jsonObject.keys();
+                                        while(keys1.hasNext()) {
+                                            String key = keys1.next();
+                                            if (key.equals("attachment")) {
+                                                try {
+                                                    JSONObject attachment = jsonObject.getJSONObject(key);
+                                                    ImageCanvas imageCanvas = new ImageCanvas(bitmap, imageView);
+                                                    imageCanvas.draw(bitmap.getWidth() * attachment.getInt("upleft") / 1000, bitmap.getHeight() * attachment.getInt("upright") / 1000, bitmap.getWidth() * attachment.getInt("downleft") / 1000, bitmap.getHeight() * attachment.getInt("downright") / 1000);
+                                                } catch (JSONException e) {
+                                                    Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        }
+                                        try {
+                                            m_parts.add(new Comment(jsonObject.getString("Text"), null, new Person("User", null), jsonObject.getString("Id"), null, jsonObject.getString("Version"), jsonObject.getString("Name")));
+                                            m_adapter = new ItemAdapter(BaseActivity.this, R.layout.list_item, m_parts);
+                                            setListAdapter(m_adapter);
+                                        } catch (JSONException e) {
+                                            Toast.makeText(BaseActivity.this, "Error", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError volleyError) {
+                                        Toast.makeText(BaseActivity.this, "Error", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                                RequestQueue queue1 = Volley.newRequestQueue(BaseActivity.this);
+                                queue1.add(objectRequest);
+                            }
                         }
                     }, 0, 0, null, new Response.ErrorListener() {
                         @Override
@@ -211,4 +258,59 @@ public class BaseActivity extends Activity {
             }
         }
     };
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(BaseActivity.this);
+        alert.setPositiveButton("Change", myclicklistener2);
+        alert.setTitle("Change comment");
+        alert.show();
+        m_parts.add(new Comment("text", null, new Person("User name", "id"), "id", null, "version", "Name of comment"));
+        m_adapter = new ItemAdapter(BaseActivity.this, R.layout.list_item, m_parts);
+        setListAdapter(m_adapter);
+        position2 = position;
+        return false;
+    }
+
+    DialogInterface.OnClickListener myclicklistener2 = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case Dialog.BUTTON_POSITIVE:
+                    final String[] id = new String[1];
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://ease-l.xyz/Image/"+imageId, null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject jsonObject) {
+                            JSONArray comments = new JSONArray();
+                            try {
+                                comments = jsonObject.getJSONArray("Comments");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                id[0] = comments.getString(position2);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Intent intent = new Intent(BaseActivity.this,CommentPost.class);
+                            intent.putExtra("Name",m_parts.get(position2).getName());
+                            intent.putExtra("Text", m_parts.get(position2).getText());
+                            intent.putExtra("Id",id[0]);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Toast.makeText(BaseActivity.this,"Error",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    RequestQueue queue = Volley.newRequestQueue(BaseActivity.this);
+                    queue.add(jsonObjectRequest);
+
+
+                    break;
+            }
+        }
+    };
+
 }

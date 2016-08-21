@@ -1,5 +1,4 @@
 package com.gr2.a2016.ease_l.classes;
-
 import java.io.File;
 import java.util.Date;
 

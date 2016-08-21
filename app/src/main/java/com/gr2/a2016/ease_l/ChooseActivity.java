@@ -490,7 +490,7 @@ public class ChooseActivity extends Activity implements ListView.OnItemClickList
                         alertDialog.show();
                     } else {
                         Intent intent = new Intent(ChooseActivity.this, PostImage.class);
-                        intent.putExtra("Image_id", id2);
+                        intent.putExtra("Image_id", images.get(clicknam-projects.size()).getId());
                         startActivity(intent);
                         finish();
                     }

@@ -29,7 +29,8 @@
         <activity
             android:name=".PostImage"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".CommentActivity"></activity>
+        <activity android:name=".CommentActivity" />
+        <activity android:name=".CommentPost"></activity>
     </application>
 
 </manifest>

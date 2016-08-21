@@ -33,7 +33,7 @@ public class ImageCanvas {
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(mutableBitmap);
         canvas.setBitmap(mutableBitmap);
-        if (x2 == -1 && y2 == -1) {
+        if (x2 == -1 && y2 == -1 && x1 != -1 && y1 != -1) {
             canvas.drawCircle(x1, y1, 6, paint);
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawCircle(x1, y1, 15, paint);
