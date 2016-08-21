@@ -91,7 +91,7 @@ public class CommentRequests {
                                 JSONObject attachment = jsonObject.getJSONObject(key);
                                 ImageCanvas imageCanvas = new ImageCanvas(bitmap,imageView);
                                 // imageCanvas.draw(attachment.getInt("x1"),attachment.getInt("y1"),attachment.getInt("x2"),attachment.getInt("y2"));
-                                imageCanvas.draw(100, 100, 150, 130);
+                                //imageCanvas.draw(100, 100, 150, 130);
                             } catch (JSONException e) {
                                 Toast.makeText(context, "error", Toast.LENGTH_LONG).show();
                             }

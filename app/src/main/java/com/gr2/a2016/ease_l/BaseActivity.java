@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -53,6 +55,11 @@ public class BaseActivity extends ListActivity implements ListView.OnItemLongCli
     ArrayList<Comment> m_parts = new ArrayList<>();
     ItemAdapter m_adapter;
     int position2;
+    ArrayList<Integer> x1 = new ArrayList<>();
+    ArrayList<Integer> x2 = new ArrayList<>();
+    ArrayList<Integer> y1 = new ArrayList<>();
+    ArrayList<Integer> y2 = new ArrayList<>();
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +189,7 @@ public class BaseActivity extends ListActivity implements ListView.OnItemLongCli
                             imageView.setImageBitmap(bitmap);
                             imageBitmap = bitmap;
                             pg.cancel();
+                            count = commentIds.size();
                             for (int i = 0; i < commentIds.size(); i++) {
                                 JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, NetworkAdresses.GET_COMMENT + commentIds.get(i), null, new Response.Listener<JSONObject>() {
                                     @Override
@@ -193,16 +201,31 @@ public class BaseActivity extends ListActivity implements ListView.OnItemLongCli
                                                 try {
                                                     JSONObject attachment = jsonObject.getJSONObject(key);
                                                     ImageCanvas imageCanvas = new ImageCanvas(bitmap, imageView);
-                                                    imageCanvas.draw(bitmap.getWidth() * attachment.getInt("upleft") / 1000, bitmap.getHeight() * attachment.getInt("upright") / 1000, bitmap.getWidth() * attachment.getInt("downleft") / 1000, bitmap.getHeight() * attachment.getInt("downright") / 1000);
+                                                    x1.add(bitmap.getWidth() * attachment.getInt("upleft") / 1000);
+                                                    y1.add(bitmap.getHeight() * attachment.getInt("upright") / 1000);
+                                                    x2.add(bitmap.getWidth() * attachment.getInt("downleft") / 1000);
+                                                    y2.add(bitmap.getHeight() * attachment.getInt("downright") / 1000);
+                                                    count--;
+                                                    if(count==0){
+                                                        imageCanvas.draw(x1,y1,x2,y2);
+                                                        m_adapter = new ItemAdapter(BaseActivity.this, R.layout.list_item, m_parts);
+                                                        setListAdapter(m_adapter);
+                                                    }
+                                                    //    LayoutInflater inflater = (LayoutInflater) BaseActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                                    //View v = inflater.inflate(R.layout.list_item, null);
+                                                   // ((ListView)findViewById(android.R.id.list)).addView(v);
                                                 } catch (JSONException e) {
                                                     Toast.makeText(BaseActivity.this, "error", Toast.LENGTH_LONG).show();
                                                 }
+                                            }else{
+                                                m_adapter = new ItemAdapter(BaseActivity.this, R.layout.list_item, m_parts);
+                                                setListAdapter(m_adapter);
                                             }
                                         }
                                         try {
                                             m_parts.add(new Comment(jsonObject.getString("Text"), null, new Person("User", null), jsonObject.getString("Id"), null, jsonObject.getString("Version"), jsonObject.getString("Name")));
-                                            m_adapter = new ItemAdapter(BaseActivity.this, R.layout.list_item, m_parts);
-                                            setListAdapter(m_adapter);
+
+
                                         } catch (JSONException e) {
                                             Toast.makeText(BaseActivity.this, "Error", Toast.LENGTH_LONG).show();
                                         }

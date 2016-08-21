@@ -21,37 +21,33 @@ public class ItemAdapter extends ArrayAdapter<Comment> {
         this.objects = objects;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent){
-
-        View v = convertView;
-
-        if (v == null) {
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.list_item, null);
-        }
-
-        Comment i = objects.get(position);
-
-        if (i != null) {
-            TextView userName = (TextView) v.findViewById(R.id.userName);
-            TextView commentName = (TextView) v.findViewById(R.id.commentName);
-            TextView commentText = (TextView) v.findViewById(R.id.commentText);
-            TextView version = (TextView) v.findViewById(R.id.version);
-            if (userName != null){
-                userName.setText(i.getAuthor().getName());
+    public View getView(int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+            if (v == null) {
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                v = inflater.inflate(R.layout.list_item, null);
             }
-            if (commentName != null){
-                commentName.setText(i.getName());
-            }
-            if (commentText != null){
-                commentText.setText(i.getText());
-            }
-            if (version != null){
-                version.setText(i.getVersion());
-            }
-        }
-        return v;
+            Comment i = objects.get(position);
 
+            if (i != null) {
+                TextView userName = (TextView) v.findViewById(R.id.userName);
+                TextView commentName = (TextView) v.findViewById(R.id.commentName);
+                TextView commentText = (TextView) v.findViewById(R.id.commentText);
+                TextView version = (TextView) v.findViewById(R.id.version);
+                if (userName != null) {
+                    userName.setText(i.getAuthor().getName());
+                }
+                if (commentName != null) {
+                    commentName.setText(i.getName());
+                }
+                if (commentText != null) {
+                    commentText.setText(i.getText());
+                }
+                if (version != null) {
+                    version.setText(i.getVersion());
+                }
+            }
+            return v;
     }
 
 }
