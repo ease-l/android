@@ -41,7 +41,7 @@ public class ImageCanvas {
             int x2 = xx2.get(i);
             int y2 = yy2.get(i);
 
-            if ((x2 == -1 || y2 == -1) && x1 != -1 && y1 != -1 && x1 != 0 && y1 != 0) {
+            if (((x2 == -1 || y2 == -1)||(x2 == 0 || y2 == 0) )&& x1 != -1 && y1 != -1 && x1 != 0 && y1 != 0) {
                 canvas.drawCircle(x1, y1, 6, paint);
                 paint.setStyle(Paint.Style.STROKE);
                 canvas.drawCircle(x1, y1, 15, paint);

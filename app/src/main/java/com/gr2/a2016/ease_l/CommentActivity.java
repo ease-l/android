@@ -206,7 +206,7 @@ draw = false;
                         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NetworkAdresses.GET_All_IMAGES + "/" + imageid + "/comment", object, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject object) {
-                                Toast.makeText(context, "sucses", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "success", Toast.LENGTH_LONG).show();
                                 finish();
                             }
                         }, new Response.ErrorListener() {
@@ -224,7 +224,7 @@ draw = false;
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(context, "inter name and jast comment!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "enter name and just comment!!", Toast.LENGTH_LONG).show();
                 }
             }
             case R.id.button4: {//back to image
